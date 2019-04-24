@@ -27,7 +27,7 @@ network-manager
 Run as root (sudo su):
 
 ```bash
-curl -sL https://raw.githubusercontent.com/home-assistant/hassio-installer/master/install/hassio_install.sh | bash -s
+curl -sL https://raw.githubusercontent.com/home-assistant/hassio-installer/master/hassio_install.sh | bash -s
 ```
 
 ### Command line arguments
@@ -39,7 +39,7 @@ curl -sL https://raw.githubusercontent.com/home-assistant/hassio-installer/maste
 you can set these parameters by appending ` -- <parameter> <value>` like:
 
 ```bash
-curl -sL https://raw.githubusercontent.com/home-assistant/hassio-installer/master/install/hassio_install.sh | bash -s -- -m MY_MACHINE
+curl -sL https://raw.githubusercontent.com/home-assistant/hassio-installer/master/hassio_install.sh | bash -s -- -m MY_MACHINE
 ```
 
 ## Supported Machine types
