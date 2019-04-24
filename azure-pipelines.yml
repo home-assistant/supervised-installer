@@ -1,0 +1,25 @@
+# https://dev.azure.com/home-assistant
+
+trigger:
+  branches:
+    include:
+    - master
+pr:
+- master
+
+variables:
+  versionShellCheck: 'v0.6.0'
+
+jobs:
+
+- job: 'ShellCheck'
+  pool:
+    vmImage: 'ubuntu-16.04'
+  steps:
+  - script: sudo docker pull koalaman/shellcheck:$(versionShellCheck)
+    displayName: 'Install ShellCheck'
+  - script: |
+      sudo docker run --rm -i \
+        -v $(pwd):/mnt:ro koalaman/shellcheck:$(versionShellCheck) \
+        hassio_installer.sh files/hassio-apparmor files/hassio-supervisor
+    displayName: 'Run ShellCheck'
