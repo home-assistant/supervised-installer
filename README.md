@@ -1,3 +1,5 @@
+[![Build Status](https://dev.azure.com/home-assistant/Home%20Assistant/_apis/build/status/home-assistant.hassio-installer?branchName=master)](https://dev.azure.com/home-assistant/Home%20Assistant/_build/latest?definitionId=6&branchName=master)
+
 # Install Hass.io
 
 Beside the usage of the images it's also possible to run Hass.io on a generic system without flashing an image.

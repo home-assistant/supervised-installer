@@ -24,7 +24,7 @@ command -v nmcli > /dev/null 2>&1 || echo "[Warning] No NetworkManager support o
 function version_gt() { test "$(printf '%s\n' "$@" | sort -V | head -n 1)" != "$1"; }
 
 # Parse command line parameters
-while [[ $# > 0 ]]; do
+while [[ $# -gt 0 ]]; do
     arg="$1"
 
     case $arg in
@@ -133,10 +133,10 @@ systemctl enable hassio-supervisor.service
 # Install Hass.io AppArmor
 if command -v apparmor_parser > /dev/null 2>&1; then
     echo "[Info] Install AppArmor scripts"
-    mkdir -p ${DATA_SHARE}/apparmor
+    mkdir -p "${DATA_SHARE}"/apparmor
     curl -sL ${URL_BIN_APPARMOR} > /usr/sbin/hassio-apparmor
     curl -sL ${URL_SERVICE_APPARMOR} > /etc/systemd/system/hassio-apparmor.service
-    curl -sL ${URL_APPARMOR_PROFILE} > ${DATA_SHARE}/apparmor/hassio-supervisor
+    curl -sL ${URL_APPARMOR_PROFILE} > "${DATA_SHARE}"/apparmor/hassio-supervisor
 
     chmod a+x /usr/sbin/hassio-apparmor
     systemctl enable hassio-apparmor.service

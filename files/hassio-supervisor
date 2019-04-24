@@ -17,7 +17,7 @@ fi
 
 # Init supervisor
 HASSIO_DATA=${DATA}
-HASSIO_IMAGE_ID=$(docker inspect --format='{{.Id}}' ${SUPERVISOR})
+HASSIO_IMAGE_ID=$(docker inspect --format='{{.Id}}' "${SUPERVISOR}")
 HASSIO_CONTAINER_ID=$(docker inspect --format='{{.Image}}' hassio_supervisor || echo "")
 
 runSupervisor() {
