@@ -22,19 +22,21 @@ HASSIO_CONTAINER_ID=$(docker inspect --format='{{.Image}}' hassio_supervisor || 
 
 runSupervisor() {
     docker rm --force hassio_supervisor || true
+
+    # shellcheck disable=SC2086
     docker run --name hassio_supervisor \
         --privileged \
         $APPARMOR \
         --security-opt seccomp=unconfined \
         -v /var/run/docker.sock:/var/run/docker.sock \
         -v /var/run/dbus:/var/run/dbus \
-        -v ${HASSIO_DATA}:/data \
-        -e SUPERVISOR_SHARE=${HASSIO_DATA} \
+        -v "${HASSIO_DATA}":/data \
+        -e SUPERVISOR_SHARE="${HASSIO_DATA}" \
         -e SUPERVISOR_NAME=hassio_supervisor \
-        -e HOMEASSISTANT_REPOSITORY=${HOMEASSISTANT} \
-        ${SUPERVISOR}
+        -e HOMEASSISTANT_REPOSITORY="${HOMEASSISTANT}" \
+        "${SUPERVISOR}"
 }
 
 # Run supervisor
-mkdir -p ${HASSIO_DATA}
+mkdir -p "${HASSIO_DATA}"
 ([ "${HASSIO_IMAGE_ID}" = "${HASSIO_CONTAINER_ID}" ] && docker start --attach hassio_supervisor) || runSupervisor
