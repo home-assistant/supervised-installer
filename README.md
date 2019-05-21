@@ -57,3 +57,24 @@ curl -sL https://raw.githubusercontent.com/home-assistant/hassio-installer/maste
 - raspberrypi3
 - raspberrypi3-64
 - tinker
+
+## !!!WARNING!!! DO NOT DELETE CREATED CONTAINERS
+This installer will create the base `homeassistant` container for you, but if you delete if (`docker rm` or `docker prune`) the supervisor will not be able to re-create it for you.
+If you wish to still safelly use `docker containers prune` you might want to add the `--filter` flag to your command.
+Example:
+```sh
+$ docker container prune --filter label!=homeassistant
+```
+or, for a greater peace of mind, you can add the following config to your `~/.docker/config.json`:
+```javascript
+{
+  "pruneFilters": ["label!=homeassistant", "label!=hassio_supervisor", "label!=addon*"]
+}
+```
+
+### Ouch, I deleted it, and now what?
+If you accidentally deleted the `homeassistant` container, and now it's not coming back, you will need to run this installer again. If that didn't work, you will need to manually reset your docker environment and run the installer again:
+- stop docker deamon
+- rm -fr /var/lib/docker/*
+- start docker deamon
+- run installer again
