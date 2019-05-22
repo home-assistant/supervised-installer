@@ -19,7 +19,6 @@ dbus
 
 ```
 apparmor-utils
-network-manager
 ```
 
 ## Run
