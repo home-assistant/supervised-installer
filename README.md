@@ -1,4 +1,4 @@
-[![Build Status](https://dev.azure.com/home-assistant/Home%20Assistant/_apis/build/status/home-assistant.hassio-installer?branchName=master)](https://dev.azure.com/home-assistant/Home%20Assistant/_build/latest?definitionId=6&branchName=master)
+[![Build Status](https://dev.azure.com/home-assistant/Hass.io/_apis/build/status/hassio-installer?branchName=master)](https://dev.azure.com/home-assistant/Hass.io/_build/latest?definitionId=6&branchName=master)
 
 # Install Hass.io
 
