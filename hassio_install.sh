@@ -2,7 +2,7 @@
 set -e
 
 ARCH=$(uname -m)
-PREFIX=""
+DOCKER_DAEMON_CONFIG=/etc/docker/daemon.json
 SNAP=false
 DOCKER_REPO=homeassistant
 DOCKER_SERVICE=docker.service
@@ -28,7 +28,7 @@ command -v nmcli > /dev/null 2>&1 || echo "[Warning] No NetworkManager support o
 #detect if running on snapped docker
 if snap list docker >/dev/null 2>&1; then
     SNAP=true
-    PREFIX=/root/snap/docker/current
+    DOCKER_DAEMON_CONFIG=/root/snap/docker/current/etc/docker/daemon.json
     DATA_SHARE=/root/snap/docker/common/hassio
     CONFIG=$DATA_SHARE/hassio.json
     DOCKER_SERVICE="snap.docker.dockerd.service"
@@ -127,10 +127,10 @@ EOF
 ##
 # Check DNS settings
 DOCKER_VERSION="$(docker --version | grep -Po "\d{2}\.\d{2}\.\d")"
-if version_gt "18.09.0" "${DOCKER_VERSION}" && [ ! -e "$PREFIX/etc/docker/daemon.json" ]; then
+if version_gt "18.09.0" "${DOCKER_VERSION}" && [ ! -e "$DOCKER_DAEMON_CONFIG" ]; then
     echo "[Warning] Create DNS settings for Docker to avoid systemd bug!"
-    mkdir -p $PREFIX/etc/docker
-    echo '{"dns": ["8.8.8.8", "8.8.4.4"]}' > $PREFIX/etc/docker/daemon.json
+    mkdir -p $(dirname ${DOCKER_DAEMON_CONFIG})
+    echo '{"dns": ["8.8.8.8", "8.8.4.4"]}' > $DOCKER_DAEMON_CONFIG
 
     echo "[Info] Restart Docker and wait 30 seconds"
     systemctl restart $DOCKER_SERVICE && sleep 30
