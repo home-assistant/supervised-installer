@@ -3,7 +3,7 @@ set -e
 
 ARCH=$(uname -m)
 DOCKER_DAEMON_CONFIG=/etc/docker/daemon.json
-SNAP=false
+DOCKER_BINARY=/usr/bin/docker
 DOCKER_REPO=homeassistant
 DOCKER_SERVICE=docker.service
 DATA_SHARE=/usr/share/hassio
@@ -27,15 +27,14 @@ command -v nmcli > /dev/null 2>&1 || echo "[Warning] No NetworkManager support o
 
 #detect if running on snapped docker
 if snap list docker >/dev/null 2>&1; then
-    SNAP=true
     DOCKER_DAEMON_CONFIG=/root/snap/docker/current/etc/docker/daemon.json
+    DOCKER_BINARY=/snap/bin/docker
     DATA_SHARE=/root/snap/docker/common/hassio
     CONFIG=$DATA_SHARE/hassio.json
     DOCKER_SERVICE="snap.docker.dockerd.service"
 fi
 
 function version_gt() { test "$(printf '%s\n' "$@" | sort -V | head -n 1)" != "$1"; }
-function adjust_snap() { sed "s,/usr/bin/docker,/snap/bin/docker,; s,docker.service,$DOCKER_SERVICE,; s,/etc/hassio.json,$CONFIG," -i "$1"; }
 
 # Parse command line parameters
 while [[ $# -gt 0 ]]; do
@@ -148,11 +147,8 @@ echo "[Info] Install supervisor startup scripts"
 curl -sL ${URL_BIN_HASSIO} > /usr/sbin/hassio-supervisor
 curl -sL ${URL_SERVICE_HASSIO} > /etc/systemd/system/hassio-supervisor.service
 
-#adjust paths for snap
-if [ "$SNAP" = "true" ]; then
-    adjust_snap /usr/sbin/hassio-supervisor
-    adjust_snap /etc/systemd/system/hassio-supervisor.service
-fi
+sed -i "s,%%HASSIO_CONFIG%%,${CONFIG},g" /usr/sbin/hassio-supervisor
+sed -i "s,%%DOCKER_BINARY%%,${DOCKER_BINARY},g; s,%%DOCKER_SERVICE%%,${DOCKER_SERVICE},g" /etc/systemd/system/hassio-supervisor.service
 
 chmod a+x /usr/sbin/hassio-supervisor
 systemctl enable hassio-supervisor.service
@@ -166,11 +162,8 @@ if command -v apparmor_parser > /dev/null 2>&1; then
     curl -sL ${URL_SERVICE_APPARMOR} > /etc/systemd/system/hassio-apparmor.service
     curl -sL ${URL_APPARMOR_PROFILE} > "${DATA_SHARE}"/apparmor/hassio-supervisor
 
-    #adjust paths for snap
-    if [ "$SNAP" = "true" ]; then
-        adjust_snap /usr/sbin/hassio-apparmor
-        adjust_snap /etc/systemd/system/hassio-apparmor.service
-    fi
+    sed -i "s,%%HASSIO_CONFIG%%,${CONFIG},g" /usr/sbin/hassio-apparmor
+    sed -i "s,%%DOCKER_SERVICE%%,${DOCKER_SERVICE},g" /etc/systemd/system/hassio-apparmor.service
 
     chmod a+x /usr/sbin/hassio-apparmor
     systemctl enable hassio-apparmor.service
