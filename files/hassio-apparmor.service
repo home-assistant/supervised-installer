@@ -6,7 +6,7 @@ Before=%%DOCKER_SERVICE%% hassio-supervisor.service
 [Service]
 Type=oneshot
 RemainAfterExit=true
-ExecStart=/usr/sbin/hassio-apparmor
+ExecStart=%%HASSIO_APPARMOR_BINARY%%
 
 [Install]
 WantedBy=multi-user.target
