@@ -2,7 +2,7 @@
 set -e
 
 # Load configs
-CONFIG_FILE=/etc/hassio.json
+CONFIG_FILE=%%HASSIO_CONFIG%%
 
 # Read configs
 DATA="$(jq --raw-output '.data // "/usr/share/hassio"' ${CONFIG_FILE})"

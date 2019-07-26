@@ -2,12 +2,10 @@
 set -e
 
 ARCH=$(uname -m)
-PREFIX=""
-SNAP=false
+DOCKER_DAEMON_CONFIG=/etc/docker/daemon.json
+DOCKER_BINARY=/usr/bin/docker
 DOCKER_REPO=homeassistant
 DOCKER_SERVICE=docker.service
-DATA_SHARE=/usr/share/hassio
-CONFIG=/etc/hassio.json
 URL_VERSION="https://version.home-assistant.io/stable.json"
 URL_BIN_HASSIO="https://raw.githubusercontent.com/home-assistant/hassio-installer/master/files/hassio-supervisor"
 URL_BIN_APPARMOR="https://raw.githubusercontent.com/home-assistant/hassio-installer/master/files/hassio-apparmor"
@@ -27,15 +25,14 @@ command -v nmcli > /dev/null 2>&1 || echo "[Warning] No NetworkManager support o
 
 #detect if running on snapped docker
 if snap list docker >/dev/null 2>&1; then
-    SNAP=true
-    PREFIX=/root/snap/docker/current
+    DOCKER_DAEMON_CONFIG=/root/snap/docker/current/etc/docker/daemon.json
+    DOCKER_BINARY=/snap/bin/docker
     DATA_SHARE=/root/snap/docker/common/hassio
     CONFIG=$DATA_SHARE/hassio.json
     DOCKER_SERVICE="snap.docker.dockerd.service"
 fi
 
 function version_gt() { test "$(printf '%s\n' "$@" | sort -V | head -n 1)" != "$1"; }
-function adjust_snap() { sed "s,/usr/bin/docker,/snap/bin/docker,; s,docker.service,$DOCKER_SERVICE,; s,/etc/hassio.json,$CONFIG," -i "$1"; }
 
 # Parse command line parameters
 while [[ $# -gt 0 ]]; do
@@ -50,6 +47,14 @@ while [[ $# -gt 0 ]]; do
             DATA_SHARE=$2
             shift
             ;;
+        -p|--prefix)
+            PREFIX=$2
+            shift
+            ;;
+        -s|--sysconfdir)
+            SYSCONFDIR=$2
+            shift
+            ;;
         *)
             echo "[Error] Unrecognized option $1"
             exit 1
@@ -57,6 +62,11 @@ while [[ $# -gt 0 ]]; do
     esac
     shift
 done
+
+PREFIX=${PREFIX:-/usr}
+SYSCONFDIR=${SYSCONFDIR:-/etc}
+DATA_SHARE=${DATA_SHARE:-$PREFIX/share/hassio}
+CONFIG=$SYSCONFDIR/hassio.json
 
 # Generate hardware options
 case $ARCH in
@@ -116,7 +126,7 @@ HASSIO_VERSION=$(curl -s $URL_VERSION | jq -e -r '.supervisor')
 
 ##
 # Write config
-cat > $CONFIG <<- EOF
+cat > "$CONFIG" <<- EOF
 {
     "supervisor": "${HASSIO_DOCKER}",
     "homeassistant": "${HOMEASSISTANT_DOCKER}",
@@ -127,10 +137,10 @@ EOF
 ##
 # Check DNS settings
 DOCKER_VERSION="$(docker --version | grep -Po "\d{2}\.\d{2}\.\d")"
-if version_gt "18.09.0" "${DOCKER_VERSION}" && [ ! -e "$PREFIX/etc/docker/daemon.json" ]; then
+if version_gt "18.09.0" "${DOCKER_VERSION}" && [ ! -e "$DOCKER_DAEMON_CONFIG" ]; then
     echo "[Warning] Create DNS settings for Docker to avoid systemd bug!"
-    mkdir -p $PREFIX/etc/docker
-    echo '{"dns": ["8.8.8.8", "8.8.4.4"]}' > $PREFIX/etc/docker/daemon.json
+    mkdir -p "$(dirname ${DOCKER_DAEMON_CONFIG})"
+    echo '{"dns": ["8.8.8.8", "8.8.4.4"]}' > $DOCKER_DAEMON_CONFIG
 
     echo "[Info] Restart Docker and wait 30 seconds"
     systemctl restart $DOCKER_SERVICE && sleep 30
@@ -145,16 +155,16 @@ docker tag "$HASSIO_DOCKER:$HASSIO_VERSION" "$HASSIO_DOCKER:latest" > /dev/null
 ##
 # Install Hass.io Supervisor
 echo "[Info] Install supervisor startup scripts"
-curl -sL ${URL_BIN_HASSIO} > /usr/sbin/hassio-supervisor
-curl -sL ${URL_SERVICE_HASSIO} > /etc/systemd/system/hassio-supervisor.service
+curl -sL ${URL_BIN_HASSIO} > "${PREFIX}"/sbin/hassio-supervisor
+curl -sL ${URL_SERVICE_HASSIO} > "${SYSCONFDIR}"/systemd/system/hassio-supervisor.service
 
-#adjust paths for snap
-if [ "$SNAP" = "true" ]; then
-    adjust_snap /usr/sbin/hassio-supervisor
-    adjust_snap /etc/systemd/system/hassio-supervisor.service
-fi
+sed -i "s,%%HASSIO_CONFIG%%,${CONFIG},g" "${PREFIX}"/sbin/hassio-supervisor
+sed -i -e "s,%%DOCKER_BINARY%%,${DOCKER_BINARY},g" \
+       -e "s,%%DOCKER_SERVICE%%,${DOCKER_SERVICE},g" \
+       -e "s,%%HASSIO_BINARY%%,${PREFIX}/sbin/hassio-supervisor,g" \
+       "${SYSCONFDIR}"/systemd/system/hassio-supervisor.service
 
-chmod a+x /usr/sbin/hassio-supervisor
+chmod a+x "${PREFIX}"/sbin/hassio-supervisor
 systemctl enable hassio-supervisor.service
 
 #
@@ -162,17 +172,16 @@ systemctl enable hassio-supervisor.service
 if command -v apparmor_parser > /dev/null 2>&1; then
     echo "[Info] Install AppArmor scripts"
     mkdir -p "${DATA_SHARE}"/apparmor
-    curl -sL ${URL_BIN_APPARMOR} > /usr/sbin/hassio-apparmor
-    curl -sL ${URL_SERVICE_APPARMOR} > /etc/systemd/system/hassio-apparmor.service
+    curl -sL ${URL_BIN_APPARMOR} > "${PREFIX}"/sbin/hassio-apparmor
+    curl -sL ${URL_SERVICE_APPARMOR} > "${SYSCONFDIR}"/systemd/system/hassio-apparmor.service
     curl -sL ${URL_APPARMOR_PROFILE} > "${DATA_SHARE}"/apparmor/hassio-supervisor
 
-    #adjust paths for snap
-    if [ "$SNAP" = "true" ]; then
-        adjust_snap /usr/sbin/hassio-apparmor
-        adjust_snap /etc/systemd/system/hassio-apparmor.service
-    fi
+    sed -i "s,%%HASSIO_CONFIG%%,${CONFIG},g" "${PREFIX}"/sbin/hassio-apparmor
+    sed -i -e "s,%%DOCKER_SERVICE%%,${DOCKER_SERVICE},g" \
+	   -e "s,%%HASSIO_APPARMOR_BINARY%%,${PREFIX}/sbin/hassio-apparmor,g" \
+	   "${SYSCONFDIR}"/systemd/system/hassio-apparmor.service
 
-    chmod a+x /usr/sbin/hassio-apparmor
+    chmod a+x "${PREFIX}"/sbin/hassio-apparmor
     systemctl enable hassio-apparmor.service
     systemctl start hassio-apparmor.service
 fi
