@@ -2,7 +2,7 @@
 
 # Install Hass.io
 
-Beside the usage of the images it's also possible to run Hass.io on a generic system without flashing an image.
+As an alternative to using the images which include the HassOS operating system and Docker, it is also possible to run Hass.io on a generic system running another OS of your choice such as Ubuntu, Debian, etc. Because of all the various possible install options, these are more of a community supported installation choice. It follows that the more esoteric of a choice made with the OS, the less a user will find in terms of information and support from the community.
 
 ## Requirements
 
@@ -62,9 +62,9 @@ curl -sL https://raw.githubusercontent.com/home-assistant/hassio-installer/maste
 
 ## !!!WARNING!!! DO NOT DELETE CREATED CONTAINERS
 
-This installer will create the base `homeassistant` container for you, but if you delete if (`docker rm` or `docker prune`) the supervisor will not be able to re-create it for you. Hass.io is a Eco System and Container Orchastrator they don't support manual adjustments.
+This installer will create the base `homeassistant` container for you, but if you delete it (`docker rm` or `docker prune`) the supervisor will not be able to re-create it for you. Hass.io is an Ecosystem and Container Orchestrator and does not support manual adjustments.
 
-If you wish to still safelly use `docker containers prune` you might want to add the `--filter` flag to your command.
+If you wish to still safely use `docker containers prune` it is strongly advised to add the `--filter` flag to your command.
 
 Example:
 ```sh
