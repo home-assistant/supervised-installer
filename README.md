@@ -62,19 +62,3 @@ curl -sL https://raw.githubusercontent.com/home-assistant/hassio-installer/maste
 - raspberrypi3-64
 - tinker
 
-## !!!WARNING!!! DO NOT DELETE CREATED CONTAINERS
-
-This installer will create the base `homeassistant` container for you, but if you delete it (`docker rm` or `docker prune`) the supervisor will not be able to re-create it for you. Hass.io is an Ecosystem and Container Orchestrator and does not support manual adjustments.
-
-If you wish to still safely use `docker containers prune` it is strongly advised to add the `--filter` flag to your command.
-
-Example:
-```sh
-$ docker container prune --filter label!=homeassistant
-```
-or, for a greater peace of mind, you can add the following config to your `~/.docker/config.json`:
-```javascript
-{
-  "pruneFilters": ["label!=homeassistant", "label!=hassio_supervisor", "label!=addon*"]
-}
-```
