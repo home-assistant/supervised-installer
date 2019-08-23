@@ -24,7 +24,6 @@ command -v apparmor_parser > /dev/null 2>&1 || echo "[Warning] No AppArmor suppo
 
 #detect if running on snapped docker
 if snap list docker >/dev/null 2>&1; then
-    DOCKER_DAEMON_CONFIG=/root/snap/docker/current/etc/docker/daemon.json
     DOCKER_BINARY=/snap/bin/docker
     DATA_SHARE=/root/snap/docker/common/hassio
     CONFIG=$DATA_SHARE/hassio.json
