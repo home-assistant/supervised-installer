@@ -32,8 +32,6 @@ if snap list docker >/dev/null 2>&1; then
     DOCKER_SERVICE="snap.docker.dockerd.service"
 fi
 
-function version_gt() { test "$(printf '%s\n' "$@" | sort -V | head -n 1)" != "$1"; }
-
 # Parse command line parameters
 while [[ $# -gt 0 ]]; do
     arg="$1"
@@ -133,18 +131,6 @@ cat > "$CONFIG" <<- EOF
     "data": "${DATA_SHARE}"
 }
 EOF
-
-##
-# Check DNS settings
-DOCKER_VERSION="$(docker --version | grep -Po "\d{2}\.\d{2}\.\d")"
-if version_gt "18.09.0" "${DOCKER_VERSION}" && [ ! -e "$DOCKER_DAEMON_CONFIG" ]; then
-    echo "[Warning] Create DNS settings for Docker to avoid systemd bug!"
-    mkdir -p "$(dirname ${DOCKER_DAEMON_CONFIG})"
-    echo '{"dns": ["8.8.8.8", "8.8.4.4"]}' > $DOCKER_DAEMON_CONFIG
-
-    echo "[Info] Restart Docker and wait 30 seconds"
-    systemctl restart $DOCKER_SERVICE && sleep 30
-fi
 
 ##
 # Pull supervisor image
