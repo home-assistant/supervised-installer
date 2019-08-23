@@ -2,7 +2,6 @@
 set -e
 
 ARCH=$(uname -m)
-DOCKER_DAEMON_CONFIG=/etc/docker/daemon.json
 DOCKER_BINARY=/usr/bin/docker
 DOCKER_REPO=homeassistant
 DOCKER_SERVICE=docker.service
