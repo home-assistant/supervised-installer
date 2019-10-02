@@ -28,6 +28,7 @@ runSupervisor() {
         --privileged \
         $APPARMOR \
         --security-opt seccomp=unconfined \
+        --memory=100m \
         -v /var/run/docker.sock:/var/run/docker.sock \
         -v /var/run/dbus:/var/run/dbus \
         -v "${HASSIO_DATA}":/data \
