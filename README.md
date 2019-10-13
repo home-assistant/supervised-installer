@@ -64,3 +64,10 @@ curl -sL https://raw.githubusercontent.com/home-assistant/hassio-installer/maste
 - raspberrypi4-64
 - tinker
 
+## Use
+
+1. You will be able to reach your installation at http://hassio.local:8123 (if your router supports mDNS, otherwise see below).
+
+2. Enable either the Samba add-on or the SSH add-on to manage your configuration in /config/ (From the UI choose Hass.io which is located in the sidebar).
+
+Note: If your router doesn’t support mDNS, then you’ll have to use the IP address of your Pi instead of hassio.local. For example, http://192.168.0.9:8123. You should be able to find the IP address of your Pi from the admin interface of your router.
