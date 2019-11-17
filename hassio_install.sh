@@ -22,7 +22,7 @@ command -v dbus-daemon > /dev/null 2>&1 || { echo "[Error] Please install dbus f
 command -v nmcli > /dev/null 2>&1 || echo "[Warning] No NetworkManager support on host."
 command -v apparmor_parser > /dev/null 2>&1 || echo "[Warning] No AppArmor support on host."
 
-#detect if running on snapped docker
+# Detect if running on snapped docker
 if snap list docker >/dev/null 2>&1; then
     DOCKER_BINARY=/snap/bin/docker
     DATA_SHARE=/root/snap/docker/common/hassio
@@ -121,7 +121,7 @@ fi
 HASSIO_VERSION=$(curl -s $URL_VERSION | jq -e -r '.supervisor')
 
 ##
-# Write config
+# Write configuration
 cat > "$CONFIG" <<- EOF
 {
     "supervisor": "${HASSIO_DOCKER}",
