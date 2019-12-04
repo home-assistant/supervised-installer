@@ -22,6 +22,11 @@ command -v dbus-daemon > /dev/null 2>&1 || { echo "[Error] Please install dbus f
 command -v nmcli > /dev/null 2>&1 || echo "[Warning] No NetworkManager support on host."
 command -v apparmor_parser > /dev/null 2>&1 || echo "[Warning] No AppArmor support on host."
 
+# Check if Modem Manager is enabled
+if systemctl list-unit-files ModemManager.service | grep enabled; then
+    echo "[Warning] ModemManager service is enabled. This might cause issue when using serial devices."
+fi
+
 # Detect if running on snapped docker
 if snap list docker >/dev/null 2>&1; then
     DOCKER_BINARY=/snap/bin/docker
