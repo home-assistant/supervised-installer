@@ -50,8 +50,8 @@ curl -sL https://raw.githubusercontent.com/home-assistant/hassio-installer/maste
 
 - intel-nuc
 - odroid-c2
+- odroid-n2
 - odroid-xu
-- orangepi-prime
 - qemuarm
 - qemuarm-64
 - qemux86
