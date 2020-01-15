@@ -115,6 +115,11 @@ if [ -z "${HOMEASSISTANT_DOCKER}" ]; then
     echo "[Error] Found no Home Assistant Docker images for this host!"
 fi
 
+if [[ ! "intel-nuc odroid-c2 odroid-n2 odroid-xu qemuarm qemuarm-64 qemux86 qemux86-64 raspberrypi raspberrypi2 raspberrypi3 raspberrypi4 raspberrypi3-64 raspberrypi4-64 tinker" = *"${MACHINE}"* ]]; then
+    echo "[Error] Unknown machine type ${MACHINE}!"
+    exit 1
+fi
+
 ### Main
 
 # Init folders
