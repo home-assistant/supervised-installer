@@ -123,8 +123,24 @@ fi
 ### Main
 
 # Init folders
+if [ ! -d "$PREFIX" ]; then
+    mkdir -p "$PREFIX"
+fi
+
+if [ ! -d "$SYSCONFDIR" ]; then
+    mkdir -p "$SYSCONFDIR"
+fi
+
 if [ ! -d "$DATA_SHARE" ]; then
     mkdir -p "$DATA_SHARE"
+fi
+
+if [ ! -d "${PREFIX}/sbin/" ]; then
+    mkdir -p "${PREFIX}/sbin/"
+fi
+
+if [ ! -d "${SYSCONFDIR}/systemd/system/" ]; then
+    mkdir -p "${SYSCONFDIR}/systemd/system/"
 fi
 
 # Read infos from web
