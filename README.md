@@ -13,11 +13,16 @@ jq
 curl
 avahi-daemon
 dbus
-apparmor-utils
-network-manager
 ```
 
 **Important**: Don't only install NetworkManager, you need also use it on your system.
+
+## Optional
+
+```
+apparmor-utils
+network-manager
+```
 
 ## Run
 
