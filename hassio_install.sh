@@ -19,8 +19,8 @@ command -v jq > /dev/null 2>&1 || { echo "[Error] Please install jq first"; exit
 command -v curl > /dev/null 2>&1 || { echo "[Error] Please install curl first"; exit 1; }
 command -v avahi-daemon > /dev/null 2>&1 || { echo "[Error] Please install avahi first"; exit 1; }
 command -v dbus-daemon > /dev/null 2>&1 || { echo "[Error] Please install dbus first"; exit 1; }
-command -v nmcli > /dev/null 2>&1 || echo "[Warning] No NetworkManager support on host."
-command -v apparmor_parser > /dev/null 2>&1 || echo "[Warning] No AppArmor support on host."
+command -v nmcli > /dev/null 2>&1 || { echo "[Error] No NetworkManager support on host."; exit 1; }
+command -v apparmor_parser > /dev/null 2>&1 || { echo "[Error] No AppArmor support on host."; exit 1; }
 
 # Check if Modem Manager is enabled
 if systemctl list-unit-files ModemManager.service | grep enabled; then
