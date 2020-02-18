@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 set -e
 
+function error { echo -e "[Error] $*"; exit 1; }
+function warn  { echo -e "[Warning] $*"; }
+
 ARCH=$(uname -m)
 DOCKER_BINARY=/usr/bin/docker
 DOCKER_REPO=homeassistant
@@ -13,18 +16,19 @@ URL_SERVICE_APPARMOR="https://raw.githubusercontent.com/home-assistant/hassio-in
 URL_APPARMOR_PROFILE="https://version.home-assistant.io/apparmor.txt"
 
 # Check env
-command -v systemctl > /dev/null 2>&1 || { echo "[Error] Only systemd is supported!"; exit 1; }
-command -v docker > /dev/null 2>&1 || { echo "[Error] Please install docker first"; exit 1; }
-command -v jq > /dev/null 2>&1 || { echo "[Error] Please install jq first"; exit 1; }
-command -v curl > /dev/null 2>&1 || { echo "[Error] Please install curl first"; exit 1; }
-command -v avahi-daemon > /dev/null 2>&1 || { echo "[Error] Please install avahi first"; exit 1; }
-command -v dbus-daemon > /dev/null 2>&1 || { echo "[Error] Please install dbus first"; exit 1; }
-command -v nmcli > /dev/null 2>&1 || echo "[Warning] No NetworkManager support on host."
-command -v apparmor_parser > /dev/null 2>&1 || echo "[Warning] No AppArmor support on host."
+command -v systemctl > /dev/null 2>&1 || error "Only systemd is supported!"
+command -v docker > /dev/null 2>&1 || error "Please install docker first"
+command -v jq > /dev/null 2>&1 || error "Please install jq first"
+command -v curl > /dev/null 2>&1 || error "Please install curl first"
+command -v avahi-daemon > /dev/null 2>&1 || error "Please install avahi first"
+command -v dbus-daemon > /dev/null 2>&1 || error "Please install dbus first"
+command -v nmcli > /dev/null 2>&1 || warn "No NetworkManager support on host."
+command -v apparmor_parser > /dev/null 2>&1 || warn "No AppArmor support on host."
+
 
 # Check if Modem Manager is enabled
 if systemctl list-unit-files ModemManager.service | grep enabled; then
-    echo "[Warning] ModemManager service is enabled. This might cause issue when using serial devices."
+    warn "ModemManager service is enabled. This might cause issue when using serial devices."
 fi
 
 # Detect if running on snapped docker
@@ -57,8 +61,7 @@ while [[ $# -gt 0 ]]; do
             shift
             ;;
         *)
-            echo "[Error] Unrecognized option $1"
-            exit 1
+            error "Unrecognized option $1"
             ;;
     esac
     shift
@@ -83,41 +86,36 @@ case $ARCH in
     ;;
     "arm" |"armv6l")
         if [ -z $MACHINE ]; then
-            echo "[ERROR] Please set machine for $ARCH"
-            exit 1
+            error "Please set machine for $ARCH"
         fi
         HOMEASSISTANT_DOCKER="$DOCKER_REPO/$MACHINE-homeassistant"
         HASSIO_DOCKER="$DOCKER_REPO/armhf-hassio-supervisor"
     ;;
     "armv7l")
         if [ -z $MACHINE ]; then
-            echo "[ERROR] Please set machine for $ARCH"
-            exit 1
+            error "Please set machine for $ARCH"
         fi
         HOMEASSISTANT_DOCKER="$DOCKER_REPO/$MACHINE-homeassistant"
         HASSIO_DOCKER="$DOCKER_REPO/armv7-hassio-supervisor"
     ;;
     "aarch64")
         if [ -z $MACHINE ]; then
-            echo "[ERROR] Please set machine for $ARCH"
-            exit 1
+            error "Please set machine for $ARCH"
         fi
         HOMEASSISTANT_DOCKER="$DOCKER_REPO/$MACHINE-homeassistant"
         HASSIO_DOCKER="$DOCKER_REPO/aarch64-hassio-supervisor"
     ;;
     *)
-        echo "[Error] $ARCH unknown!"
-        exit 1
+        error "$ARCH unknown!"
     ;;
 esac
 
 if [ -z "${HOMEASSISTANT_DOCKER}" ]; then
-    echo "[Error] Found no Home Assistant Docker images for this host!"
+    error "Found no Home Assistant Docker images for this host!"
 fi
 
 if [[ ! "intel-nuc odroid-c2 odroid-n2 odroid-xu qemuarm qemuarm-64 qemux86 qemux86-64 raspberrypi raspberrypi2 raspberrypi3 raspberrypi4 raspberrypi3-64 raspberrypi4-64 tinker" = *"${MACHINE}"* ]]; then
-    echo "[Error] Unknown machine type ${MACHINE}!"
-    exit 1
+    error "Unknown machine type ${MACHINE}!"
 fi
 
 ### Main
