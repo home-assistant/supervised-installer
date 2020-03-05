@@ -28,8 +28,8 @@ runSupervisor() {
         --privileged \
         $APPARMOR \
         --security-opt seccomp=unconfined \
-        -v /var/run/docker.sock:/var/run/docker.sock \
-        -v /var/run/dbus:/var/run/dbus \
+        -v /run/docker.sock:/run/docker.sock \
+        -v /run/dbus:/run/dbus \
         -v "${HASSIO_DATA}":/data \
         -e SUPERVISOR_SHARE="${HASSIO_DATA}" \
         -e SUPERVISOR_NAME=hassio_supervisor \
