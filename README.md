@@ -1,10 +1,12 @@
 [![Build Status](https://dev.azure.com/home-assistant/Hass.io/_apis/build/status/hassio-installer?branchName=master)](https://dev.azure.com/home-assistant/Hass.io/_build/latest?definitionId=6&branchName=master)
 
-# Install Hass.io
+# Install Home Assistant Supervised
 
-As an alternative to using the images which include the HassOS operating system and Docker, it is also possible to run Hass.io on a generic system running another OS of your choice such as Ubuntu, Debian, etc. Because of all the various possible install options, these are more of a community supported installation choice. It follows that the more esoteric of a choice made with the OS, the less a user will find in terms of information and support from the community.
+As an alternative to using the images which include the Home Assistant operating-system and Docker, it is also possible to run Home Assistant on a generic system running another Linux of your choice such as Ubuntu, Debian, etc as Supervised. Because of all the various possible install options, these are more of a community supported installation choice. It follows that the more esoteric of a choice made with the OS, the less a user will find in terms of information and support from the community.
 
 ## Requirements
+
+We Support only Linux with follow [FHS 3.0](https://en.wikipedia.org/wiki/Filesystem_Hierarchy_Standard)!
 
 ```
 docker-ce
@@ -15,14 +17,14 @@ avahi-daemon
 dbus
 ```
 
-**Important**: Don't only install NetworkManager, you need also use it on your system.
-
 ## Optional
 
 ```
 apparmor-utils
 network-manager
 ```
+
+**Important**: Don't only install NetworkManager, you need also use it on your system.
 
 ## Run
 
