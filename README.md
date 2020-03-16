@@ -6,7 +6,7 @@ As an alternative to using the images which include the Home Assistant operating
 
 ## Requirements
 
-We Support only Linux with follow [FHS 3.0](https://en.wikipedia.org/wiki/Filesystem_Hierarchy_Standard)!
+We only support Linux distributions that follow the [FHS 3.0](https://en.wikipedia.org/wiki/Filesystem_Hierarchy_Standard)!
 
 ```
 docker-ce
