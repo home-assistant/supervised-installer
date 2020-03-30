@@ -21,5 +21,5 @@ jobs:
   - script: |
       sudo docker run --rm -i \
         -v $(pwd):/mnt:ro koalaman/shellcheck:$(versionShellCheck) \
-        hassio_install.sh files/hassio-apparmor files/hassio-supervisor
+        installer.sh files/hassio-apparmor files/hassio-supervisor files/ha
     displayName: 'Run ShellCheck'
