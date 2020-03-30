@@ -65,4 +65,3 @@ curl -sL https://raw.githubusercontent.com/home-assistant/hassio-installer/maste
 - raspberrypi3-64
 - raspberrypi4-64
 - tinker
-

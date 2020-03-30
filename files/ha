@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+docker exec hassio_cli ha $*
