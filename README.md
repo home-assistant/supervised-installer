@@ -63,3 +63,7 @@ curl -sL https://raw.githubusercontent.com/home-assistant/supervised-installer/m
 - raspberrypi3-64
 - raspberrypi4-64
 - tinker
+
+## Troubleshooting
+
+If somethings are wrong to use `journalctl -f` to get your system logs. If you are not familiar with Linux and how you can fix issues, we recommend do use our Home Assistant OS.
