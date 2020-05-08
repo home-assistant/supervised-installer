@@ -4,6 +4,8 @@ set -e
 function error { echo -e "[Error] $*"; exit 1; }
 function warn  { echo -e "[Warning] $*"; }
 
+warn "This way to run Home Assistant is carfully and should be only used if the OS is not possible to run!"
+
 ARCH=$(uname -m)
 DOCKER_BINARY=/usr/bin/docker
 DOCKER_REPO=homeassistant
