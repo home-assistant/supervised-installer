@@ -4,7 +4,17 @@ set -e
 function error { echo -e "[Error] $*"; exit 1; }
 function warn  { echo -e "[Warning] $*"; }
 
-warn "This way to run Home Assistant is carfully and should be only used if the OS is not possible to run!"
+warn "This installer of Home Assistant is for experts only!"
+warn ""
+warn "This method is not supported by the Home Assistant team."
+warn "You need to solve any issue you run into while installing"
+warn "or updating Home Assistant yourself."
+warn ""
+warn "If you got this installer from a tutorial, you're probably"
+warn "not expert enough."
+warn ""
+warn "Press any key to continue"
+read
 
 ARCH=$(uname -m)
 DOCKER_BINARY=/usr/bin/docker
