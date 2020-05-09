@@ -13,7 +13,7 @@ warn ""
 warn "If you got this installer from a tutorial, you're probably"
 warn "not expert enough."
 warn ""
-warn "Press any key to continue"
+warn "Press any key to continue or control + c to quit"
 read
 
 ARCH=$(uname -m)
