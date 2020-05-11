@@ -4,21 +4,18 @@ set -e
 function error { echo -e "[Error] $*"; exit 1; }
 function warn  { echo -e "[Warning] $*"; }
 
-warn "This installer is no longer supported."
+
+warn "This installer of Home Assistant is for experts only!"
 warn ""
-warn "Home Assistant might work today, tomorrow maybe not."
+warn "This method is not supported by the Home Assistant team."
+warn "You need to solve any issue you run into while installing"
+warn "or updating Home Assistant yourself."
 warn ""
-warn "If you want more control over your own system, run"
-warn "Home Assistant as a VM or run Home Assistant Core"
-warn "via a Docker container."
+warn "If you got this installer from a tutorial, you're probably"
+warn "not expert enough."
 warn ""
-echo "Please type not supported to continue this installation"
-read x
-if [ "$x" != "not supported" ]
-then
-  echo "OK, bye!"
-  exit 1;
-fi
+warn "Press any key to continue or control + c to quit"
+read
 
 ARCH=$(uname -m)
 DOCKER_BINARY=/usr/bin/docker
