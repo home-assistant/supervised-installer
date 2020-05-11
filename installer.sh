@@ -12,7 +12,7 @@ warn "If you want more control over your own system, run"
 warn "Home Assistant as a VM or run Home Assistant Core"
 warn "via a Docker container."
 warn ""
-echo 'Please type "not supported" to continue this installation'
+echo "Please type not supported to continue this installation"
 read x
 if [ "$x" != "not supported" ]
 then
