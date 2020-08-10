@@ -1,40 +1,18 @@
-# This install method has been deprecated.
+# This installation method is for advanced users only
 
-## https://www.home-assistant.io/blog/2020/05/09/deprecating-home-assistant-supervised-on-generic-linux/
+## Make sure you understand [the requirements](https://github.com/home-assistant/architecture/blob/master/adr/0014-home-assistant-supervised.md)
 
 # Install Home Assistant Supervised
 
-As an alternative to using the images which include the Home Assistant operating-system and Docker, it is also possible to run Home Assistant on a generic system running another Linux of your choice such as Ubuntu, Debian, etc as Supervised. Because of all the various possible install options, these are more of a community supported installation choice. It follows that the more esoteric of a choice made with the OS, the less a user will find in terms of information and support from the community.
+This installation method provides the full Home Assistant experience on a regular operating system. This means, all components from the Home Assistant method are used, except for the Home Assistant Operating System. This system will run the Home Assistant Supervisor. The Supervisor is not just an application, it is a full appliance that manages the whole system. It will clean up, repair or reset settings to default if they no longer match expected values.
 
-## Warning
+By not using the Home Assistant Operating System, the user is responsible for making sure that all required components are installed and maintained. Required components and their versions will change over time. Home Assistant Supervised is provided as-is as a foundation for community supported do-it-yourself solutions. We only accept bug reports for issues that have been reproduced on a freshly installed, fully updated Debian with no additional packages.
 
-The Supervisord system is designed to provide a full-featured environment that is comparable with Kubernetes, which is also a bad idea to run it by the side of another orchestrator on the same Host. The Supervisor is also not caring for other software they run on your Host, and it can affect things bad on both sides. You also need to know that the Home Assistant OS runs with less overhead on your Proxmox or other Hypervisor as if you install first Debian and Ubuntu. In most cases, it's not the best choice to run the Supervisord on top of a Linux, if you not 100% sure what you do. It is not just a container inside Docker!
+This method is considered advanced and should only be used if one is an expert in managing a Linux operating system, Docker and networking.
 
-**If you have issues, don't report this to us. You are self responsible for what you do, if you use this installer.**
+**If you have issues, don't report this to us. You are responsible for your system if you use this installer.**
 
-## Requirements
-
-We only support Linux distributions that follow the [FHS 3.0](https://en.wikipedia.org/wiki/Filesystem_Hierarchy_Standard)!
-
-```
-docker-ce
-bash
-jq
-curl
-avahi-daemon
-dbus
-```
-
-## Optional
-
-```
-apparmor-utils
-network-manager
-```
-
-**Important**: Don't only install NetworkManager, you need also use it on your system.
-
-## Run
+## Installation
 
 Run as root (sudo su):
 
