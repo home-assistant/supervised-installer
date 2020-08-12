@@ -5,7 +5,7 @@ set -e
 CONFIG_FILE=%%HASSIO_CONFIG%%
 
 SUPERVISOR="$(jq --raw-output '.supervisor' ${CONFIG_FILE})"
-HOMEASSISTANT="$(jq --raw-output '.homeassistant' ${CONFIG_FILE})"
+MACHINE="$(jq --raw-output '.machine' ${CONFIG_FILE})"
 DATA="$(jq --raw-output '.data // "/usr/share/hassio"' ${CONFIG_FILE})"
 
 # AppArmor Support
@@ -30,10 +30,11 @@ runSupervisor() {
         --security-opt seccomp=unconfined \
         -v /run/docker.sock:/run/docker.sock \
         -v /run/dbus:/run/dbus \
-        -v "${HASSIO_DATA}":/data \
+        -v /etc/machine-id:/etc/machine-id:ro \
+        -v "${HASSIO_DATA}":/data:rw \
         -e SUPERVISOR_SHARE="${HASSIO_DATA}" \
         -e SUPERVISOR_NAME=hassio_supervisor \
-        -e HOMEASSISTANT_REPOSITORY="${HOMEASSISTANT}" \
+        -e SUPERVISOR_MACHINE="${MACHINE}" \
         "${SUPERVISOR}"
 }
 
