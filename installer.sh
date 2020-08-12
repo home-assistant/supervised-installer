@@ -83,33 +83,28 @@ CONFIG=$SYSCONFDIR/hassio.json
 case $ARCH in
     "i386" | "i686")
         MACHINE=${MACHINE:=qemux86}
-        HOMEASSISTANT_DOCKER="$DOCKER_REPO/$MACHINE-homeassistant"
         HASSIO_DOCKER="$DOCKER_REPO/i386-hassio-supervisor"
     ;;
     "x86_64")
         MACHINE=${MACHINE:=qemux86-64}
-        HOMEASSISTANT_DOCKER="$DOCKER_REPO/$MACHINE-homeassistant"
         HASSIO_DOCKER="$DOCKER_REPO/amd64-hassio-supervisor"
     ;;
     "arm" |"armv6l")
         if [ -z $MACHINE ]; then
             error "Please set machine for $ARCH"
         fi
-        HOMEASSISTANT_DOCKER="$DOCKER_REPO/$MACHINE-homeassistant"
         HASSIO_DOCKER="$DOCKER_REPO/armhf-hassio-supervisor"
     ;;
     "armv7l")
         if [ -z $MACHINE ]; then
             error "Please set machine for $ARCH"
         fi
-        HOMEASSISTANT_DOCKER="$DOCKER_REPO/$MACHINE-homeassistant"
         HASSIO_DOCKER="$DOCKER_REPO/armv7-hassio-supervisor"
     ;;
     "aarch64")
         if [ -z $MACHINE ]; then
             error "Please set machine for $ARCH"
         fi
-        HOMEASSISTANT_DOCKER="$DOCKER_REPO/$MACHINE-homeassistant"
         HASSIO_DOCKER="$DOCKER_REPO/aarch64-hassio-supervisor"
     ;;
     *)
@@ -140,7 +135,7 @@ HASSIO_VERSION=$(curl -s $URL_VERSION | jq -e -r '.supervisor')
 cat > "$CONFIG" <<- EOF
 {
     "supervisor": "${HASSIO_DOCKER}",
-    "homeassistant": "${HOMEASSISTANT_DOCKER}",
+    "machine": "${MACHINE}",
     "data": "${DATA_SHARE}"
 }
 EOF
@@ -187,7 +182,7 @@ fi
 
 ##
 # Init system
-echo "[Info] Run Hass.io"
+echo "[Info] Run Home Assistant Supervised"
 systemctl start hassio-supervisor.service
 
 ##
