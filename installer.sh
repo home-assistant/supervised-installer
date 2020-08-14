@@ -112,7 +112,7 @@ case $ARCH in
     ;;
 esac
 
-if [ -z "${HOMEASSISTANT_DOCKER}" ]; then
+if [ -z "${HASSIO_DOCKER}" ]; then
     error "Found no Home Assistant Docker images for this host!"
 fi
 
