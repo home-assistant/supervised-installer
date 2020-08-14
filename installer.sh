@@ -112,10 +112,6 @@ case $ARCH in
     ;;
 esac
 
-if [ -z "${HOMEASSISTANT_DOCKER}" ]; then
-    error "Found no Home Assistant Docker images for this host!"
-fi
-
 if [[ ! "intel-nuc odroid-c2 odroid-n2 odroid-xu qemuarm qemuarm-64 qemux86 qemux86-64 raspberrypi raspberrypi2 raspberrypi3 raspberrypi4 raspberrypi3-64 raspberrypi4-64 tinker" = *"${MACHINE}"* ]]; then
     error "Unknown machine type ${MACHINE}!"
 fi
