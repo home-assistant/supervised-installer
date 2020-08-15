@@ -14,6 +14,7 @@ ARCH=$(uname -m)
 DOCKER_BINARY=/usr/bin/docker
 DOCKER_REPO=homeassistant
 DOCKER_SERVICE=docker.service
+DOCKER_DAEMON_CONFIG=/etc/docker/daemon.json
 URL_VERSION="https://version.home-assistant.io/stable.json"
 URL_HA="https://raw.githubusercontent.com/home-assistant/supervised-installer/master/files/ha"
 URL_BIN_HASSIO="https://raw.githubusercontent.com/home-assistant/supervised-installer/master/files/hassio-supervisor"
@@ -45,6 +46,23 @@ if snap list docker >/dev/null 2>&1; then
     CONFIG=$DATA_SHARE/hassio.json
     DOCKER_SERVICE="snap.docker.dockerd.service"
 fi
+
+# Detect wrong docker logger config
+if [ ! -f "$DOCKER_DAEMON_CONFIG" ]; then
+  # Write default configuration
+  cat > "$DOCKER_DAEMON_CONFIG" <<- EOF
+    {
+        "log-driver": "journald"
+    }
+EOF
+  # Restart Docker service
+  systemctl restart "$DOCKER_SERVICE"
+else
+  if [[ $(jq -r -e '."log-driver"' "$DOCKER_DAEMON_CONFIG") != "journald" ]]; then 
+    warn "Docker is not using journald as the log driver, this is not supported."
+  fi
+fi
+
 
 # Parse command line parameters
 while [[ $# -gt 0 ]]; do
