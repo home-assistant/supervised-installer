@@ -39,14 +39,6 @@ if systemctl list-unit-files ModemManager.service | grep enabled; then
     warn "ModemManager service is enabled. This might cause issue when using serial devices."
 fi
 
-# Detect if running on snapped docker
-if snap list docker >/dev/null 2>&1; then
-    DOCKER_BINARY=/snap/bin/docker
-    DATA_SHARE=/root/snap/docker/common/hassio
-    CONFIG=$DATA_SHARE/hassio.json
-    DOCKER_SERVICE="snap.docker.dockerd.service"
-fi
-
 # Detect wrong docker logger config
 if [ ! -f "$DOCKER_DAEMON_CONFIG" ]; then
   # Write default configuration
