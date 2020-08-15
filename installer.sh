@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
+function info { echo -e "[Info] $*"; }
 function error { echo -e "[Error] $*"; exit 1; }
 function warn  { echo -e "[Warning] $*"; }
 
@@ -42,19 +43,27 @@ fi
 # Detect wrong docker logger config
 if [ ! -f "$DOCKER_DAEMON_CONFIG" ]; then
   # Write default configuration
+  info "Creating default docker deamon configuration $DOCKER_DAEMON_CONFIG"
   cat > "$DOCKER_DAEMON_CONFIG" <<- EOF
     {
-        "log-driver": "journald"
+        "log-driver": "journald",
+        "storage-driver": "overlay2"
     }
 EOF
   # Restart Docker service
+  info "Restarting docker service"
   systemctl restart "$DOCKER_SERVICE"
 else
-  if [[ $(jq -r -e '."log-driver"' "$DOCKER_DAEMON_CONFIG") != "journald" ]]; then 
-    warn "Docker is not using journald as the log driver, this is not supported."
+  STORRAGE_DRIVER=$(docker info -f "{{json .}}" | jq -r -e .Driver)
+  LOGGING_DRIVER=$(docker info -f "{{json .}}" | jq -r -e .LoggingDriver)
+  if [[ "$STORRAGE_DRIVER" != "overlay2" ]]; then 
+    warn "Docker is using $STORRAGE_DRIVER and not 'overlay2' as the storrage driver, this is not supported."
+  fi
+  if [[ "$LOGGING_DRIVER"  != "journald" ]]; then 
+    warn "Docker is using $LOGGING_DRIVER and not 'journald' as the logging driver, this is not supported."
   fi
 fi
-
+exit
 
 # Parse command line parameters
 while [[ $# -gt 0 ]]; do
