@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
+function info { echo -e "[Info] $*"; }
 function error { echo -e "[Error] $*"; exit 1; }
 function warn  { echo -e "[Warning] $*"; }
 
@@ -14,6 +15,7 @@ ARCH=$(uname -m)
 DOCKER_BINARY=/usr/bin/docker
 DOCKER_REPO=homeassistant
 DOCKER_SERVICE=docker.service
+DOCKER_DAEMON_CONFIG=/etc/docker/daemon.json
 URL_VERSION="https://version.home-assistant.io/stable.json"
 URL_HA="https://raw.githubusercontent.com/home-assistant/supervised-installer/master/files/ha"
 URL_BIN_HASSIO="https://raw.githubusercontent.com/home-assistant/supervised-installer/master/files/hassio-supervisor"
@@ -38,12 +40,28 @@ if systemctl list-unit-files ModemManager.service | grep enabled; then
     warn "ModemManager service is enabled. This might cause issue when using serial devices."
 fi
 
-# Detect if running on snapped docker
-if snap list docker >/dev/null 2>&1; then
-    DOCKER_BINARY=/snap/bin/docker
-    DATA_SHARE=/root/snap/docker/common/hassio
-    CONFIG=$DATA_SHARE/hassio.json
-    DOCKER_SERVICE="snap.docker.dockerd.service"
+# Detect wrong docker logger config
+if [ ! -f "$DOCKER_DAEMON_CONFIG" ]; then
+  # Write default configuration
+  info "Creating default docker deamon configuration $DOCKER_DAEMON_CONFIG"
+  cat > "$DOCKER_DAEMON_CONFIG" <<- EOF
+    {
+        "log-driver": "journald",
+        "storage-driver": "overlay2"
+    }
+EOF
+  # Restart Docker service
+  info "Restarting docker service"
+  systemctl restart "$DOCKER_SERVICE"
+else
+  STORRAGE_DRIVER=$(docker info -f "{{json .}}" | jq -r -e .Driver)
+  LOGGING_DRIVER=$(docker info -f "{{json .}}" | jq -r -e .LoggingDriver)
+  if [[ "$STORRAGE_DRIVER" != "overlay2" ]]; then 
+    warn "Docker is using $STORRAGE_DRIVER and not 'overlay2' as the storrage driver, this is not supported."
+  fi
+  if [[ "$LOGGING_DRIVER"  != "journald" ]]; then 
+    warn "Docker is using $LOGGING_DRIVER and not 'journald' as the logging driver, this is not supported."
+  fi
 fi
 
 # Parse command line parameters
@@ -138,13 +156,13 @@ EOF
 
 ##
 # Pull supervisor image
-echo "[Info] Install supervisor Docker container"
+info "Install supervisor Docker container"
 docker pull "$HASSIO_DOCKER:$HASSIO_VERSION" > /dev/null
 docker tag "$HASSIO_DOCKER:$HASSIO_VERSION" "$HASSIO_DOCKER:latest" > /dev/null
 
 ##
 # Install Hass.io Supervisor
-echo "[Info] Install supervisor startup scripts"
+info "Install supervisor startup scripts"
 curl -sL ${URL_BIN_HASSIO} > "${PREFIX}/sbin/hassio-supervisor"
 curl -sL ${URL_SERVICE_HASSIO} > "${SYSCONFDIR}/systemd/system/hassio-supervisor.service"
 
@@ -160,7 +178,7 @@ systemctl enable hassio-supervisor.service
 #
 # Install Hass.io AppArmor
 if command -v apparmor_parser > /dev/null 2>&1; then
-    echo "[Info] Install AppArmor scripts"
+    info "Install AppArmor scripts"
     mkdir -p "${DATA_SHARE}/apparmor"
     curl -sL ${URL_BIN_APPARMOR} > "${PREFIX}/sbin/hassio-apparmor"
     curl -sL ${URL_SERVICE_APPARMOR} > "${SYSCONFDIR}/systemd/system/hassio-apparmor.service"
@@ -178,11 +196,11 @@ fi
 
 ##
 # Init system
-echo "[Info] Run Home Assistant Supervised"
+info "Run Home Assistant Supervised"
 systemctl start hassio-supervisor.service
 
 ##
 # Setup CLI
-echo "[Info] Install cli 'ha'"
+info "Install cli 'ha'"
 curl -sL ${URL_HA} > "${PREFIX}/bin/ha"
 chmod a+x "${PREFIX}/bin/ha"
