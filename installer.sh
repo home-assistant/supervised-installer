@@ -156,13 +156,13 @@ EOF
 
 ##
 # Pull supervisor image
-echo "[Info] Install supervisor Docker container"
+info "Install supervisor Docker container"
 docker pull "$HASSIO_DOCKER:$HASSIO_VERSION" > /dev/null
 docker tag "$HASSIO_DOCKER:$HASSIO_VERSION" "$HASSIO_DOCKER:latest" > /dev/null
 
 ##
 # Install Hass.io Supervisor
-echo "[Info] Install supervisor startup scripts"
+info "Install supervisor startup scripts"
 curl -sL ${URL_BIN_HASSIO} > "${PREFIX}/sbin/hassio-supervisor"
 curl -sL ${URL_SERVICE_HASSIO} > "${SYSCONFDIR}/systemd/system/hassio-supervisor.service"
 
@@ -178,7 +178,7 @@ systemctl enable hassio-supervisor.service
 #
 # Install Hass.io AppArmor
 if command -v apparmor_parser > /dev/null 2>&1; then
-    echo "[Info] Install AppArmor scripts"
+    info "Install AppArmor scripts"
     mkdir -p "${DATA_SHARE}/apparmor"
     curl -sL ${URL_BIN_APPARMOR} > "${PREFIX}/sbin/hassio-apparmor"
     curl -sL ${URL_SERVICE_APPARMOR} > "${SYSCONFDIR}/systemd/system/hassio-apparmor.service"
@@ -196,11 +196,11 @@ fi
 
 ##
 # Init system
-echo "[Info] Run Home Assistant Supervised"
+info "Run Home Assistant Supervised"
 systemctl start hassio-supervisor.service
 
 ##
 # Setup CLI
-echo "[Info] Install cli 'ha'"
+info "Install cli 'ha'"
 curl -sL ${URL_HA} > "${PREFIX}/bin/ha"
 chmod a+x "${PREFIX}/bin/ha"
