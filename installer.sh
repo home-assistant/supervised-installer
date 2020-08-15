@@ -63,7 +63,6 @@ else
     warn "Docker is using $LOGGING_DRIVER and not 'journald' as the logging driver, this is not supported."
   fi
 fi
-exit
 
 # Parse command line parameters
 while [[ $# -gt 0 ]]; do
