@@ -1,29 +1,21 @@
 #!/usr/bin/env bash
 set -e
 
+function info { echo -e "[Info] $*"; }
 function error { echo -e "[Error] $*"; exit 1; }
 function warn  { echo -e "[Warning] $*"; }
 
-warn "This installer is no longer supported."
-warn ""
-warn "Home Assistant might work today, tomorrow maybe not."
 warn ""
 warn "If you want more control over your own system, run"
 warn "Home Assistant as a VM or run Home Assistant Core"
 warn "via a Docker container."
 warn ""
-echo 'Please typ "not supported" to continue this installation'
-read x
-if [ "$x" != "not supported" ]
-then
-  echo "OK, bye!"
-  exit 1
-fi
 
 ARCH=$(uname -m)
 DOCKER_BINARY=/usr/bin/docker
 DOCKER_REPO=homeassistant
 DOCKER_SERVICE=docker.service
+DOCKER_DAEMON_CONFIG=/etc/docker/daemon.json
 URL_VERSION="https://version.home-assistant.io/stable.json"
 URL_HA="https://raw.githubusercontent.com/home-assistant/supervised-installer/master/files/ha"
 URL_BIN_HASSIO="https://raw.githubusercontent.com/home-assistant/supervised-installer/master/files/hassio-supervisor"
@@ -39,8 +31,8 @@ command -v jq > /dev/null 2>&1 || error "Please install jq first"
 command -v curl > /dev/null 2>&1 || error "Please install curl first"
 command -v avahi-daemon > /dev/null 2>&1 || error "Please install avahi first"
 command -v dbus-daemon > /dev/null 2>&1 || error "Please install dbus first"
-command -v nmcli > /dev/null 2>&1 || warn "No NetworkManager support on host."
-command -v apparmor_parser > /dev/null 2>&1 || warn "No AppArmor support on host."
+command -v nmcli > /dev/null 2>&1 || error "No NetworkManager support on host."
+command -v apparmor_parser > /dev/null 2>&1 || error "No AppArmor support on host."
 
 
 # Check if Modem Manager is enabled
@@ -48,12 +40,28 @@ if systemctl list-unit-files ModemManager.service | grep enabled; then
     warn "ModemManager service is enabled. This might cause issue when using serial devices."
 fi
 
-# Detect if running on snapped docker
-if snap list docker >/dev/null 2>&1; then
-    DOCKER_BINARY=/snap/bin/docker
-    DATA_SHARE=/root/snap/docker/common/hassio
-    CONFIG=$DATA_SHARE/hassio.json
-    DOCKER_SERVICE="snap.docker.dockerd.service"
+# Detect wrong docker logger config
+if [ ! -f "$DOCKER_DAEMON_CONFIG" ]; then
+  # Write default configuration
+  info "Creating default docker deamon configuration $DOCKER_DAEMON_CONFIG"
+  cat > "$DOCKER_DAEMON_CONFIG" <<- EOF
+    {
+        "log-driver": "journald",
+        "storage-driver": "overlay2"
+    }
+EOF
+  # Restart Docker service
+  info "Restarting docker service"
+  systemctl restart "$DOCKER_SERVICE"
+else
+  STORRAGE_DRIVER=$(docker info -f "{{json .}}" | jq -r -e .Driver)
+  LOGGING_DRIVER=$(docker info -f "{{json .}}" | jq -r -e .LoggingDriver)
+  if [[ "$STORRAGE_DRIVER" != "overlay2" ]]; then 
+    warn "Docker is using $STORRAGE_DRIVER and not 'overlay2' as the storrage driver, this is not supported."
+  fi
+  if [[ "$LOGGING_DRIVER"  != "journald" ]]; then 
+    warn "Docker is using $LOGGING_DRIVER and not 'journald' as the logging driver, this is not supported."
+  fi
 fi
 
 # Parse command line parameters
@@ -93,43 +101,34 @@ CONFIG=$SYSCONFDIR/hassio.json
 case $ARCH in
     "i386" | "i686")
         MACHINE=${MACHINE:=qemux86}
-        HOMEASSISTANT_DOCKER="$DOCKER_REPO/$MACHINE-homeassistant"
         HASSIO_DOCKER="$DOCKER_REPO/i386-hassio-supervisor"
     ;;
     "x86_64")
         MACHINE=${MACHINE:=qemux86-64}
-        HOMEASSISTANT_DOCKER="$DOCKER_REPO/$MACHINE-homeassistant"
         HASSIO_DOCKER="$DOCKER_REPO/amd64-hassio-supervisor"
     ;;
     "arm" |"armv6l")
         if [ -z $MACHINE ]; then
             error "Please set machine for $ARCH"
         fi
-        HOMEASSISTANT_DOCKER="$DOCKER_REPO/$MACHINE-homeassistant"
         HASSIO_DOCKER="$DOCKER_REPO/armhf-hassio-supervisor"
     ;;
     "armv7l")
         if [ -z $MACHINE ]; then
             error "Please set machine for $ARCH"
         fi
-        HOMEASSISTANT_DOCKER="$DOCKER_REPO/$MACHINE-homeassistant"
         HASSIO_DOCKER="$DOCKER_REPO/armv7-hassio-supervisor"
     ;;
     "aarch64")
         if [ -z $MACHINE ]; then
             error "Please set machine for $ARCH"
         fi
-        HOMEASSISTANT_DOCKER="$DOCKER_REPO/$MACHINE-homeassistant"
         HASSIO_DOCKER="$DOCKER_REPO/aarch64-hassio-supervisor"
     ;;
     *)
         error "$ARCH unknown!"
     ;;
 esac
-
-if [ -z "${HOMEASSISTANT_DOCKER}" ]; then
-    error "Found no Home Assistant Docker images for this host!"
-fi
 
 if [[ ! "intel-nuc odroid-c2 odroid-n2 odroid-xu qemuarm qemuarm-64 qemux86 qemux86-64 raspberrypi raspberrypi2 raspberrypi3 raspberrypi4 raspberrypi3-64 raspberrypi4-64 tinker" = *"${MACHINE}"* ]]; then
     error "Unknown machine type ${MACHINE}!"
@@ -150,20 +149,20 @@ HASSIO_VERSION=$(curl -s $URL_VERSION | jq -e -r '.supervisor')
 cat > "$CONFIG" <<- EOF
 {
     "supervisor": "${HASSIO_DOCKER}",
-    "homeassistant": "${HOMEASSISTANT_DOCKER}",
+    "machine": "${MACHINE}",
     "data": "${DATA_SHARE}"
 }
 EOF
 
 ##
 # Pull supervisor image
-echo "[Info] Install supervisor Docker container"
+info "Install supervisor Docker container"
 docker pull "$HASSIO_DOCKER:$HASSIO_VERSION" > /dev/null
 docker tag "$HASSIO_DOCKER:$HASSIO_VERSION" "$HASSIO_DOCKER:latest" > /dev/null
 
 ##
 # Install Hass.io Supervisor
-echo "[Info] Install supervisor startup scripts"
+info "Install supervisor startup scripts"
 curl -sL ${URL_BIN_HASSIO} > "${PREFIX}/sbin/hassio-supervisor"
 curl -sL ${URL_SERVICE_HASSIO} > "${SYSCONFDIR}/systemd/system/hassio-supervisor.service"
 
@@ -179,7 +178,7 @@ systemctl enable hassio-supervisor.service
 #
 # Install Hass.io AppArmor
 if command -v apparmor_parser > /dev/null 2>&1; then
-    echo "[Info] Install AppArmor scripts"
+    info "Install AppArmor scripts"
     mkdir -p "${DATA_SHARE}/apparmor"
     curl -sL ${URL_BIN_APPARMOR} > "${PREFIX}/sbin/hassio-apparmor"
     curl -sL ${URL_SERVICE_APPARMOR} > "${SYSCONFDIR}/systemd/system/hassio-apparmor.service"
@@ -197,11 +196,11 @@ fi
 
 ##
 # Init system
-echo "[Info] Run Hass.io"
+info "Run Home Assistant Supervised"
 systemctl start hassio-supervisor.service
 
 ##
 # Setup CLI
-echo "[Info] Install cli 'ha'"
+info "Install cli 'ha'"
 curl -sL ${URL_HA} > "${PREFIX}/bin/ha"
 chmod a+x "${PREFIX}/bin/ha"
