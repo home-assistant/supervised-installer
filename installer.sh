@@ -65,7 +65,7 @@ else
 fi
 
 # Check dmesg access
-if ! dmesg > /dev/null; then
+if [[ "$(sysctl --values kernel.dmesg_restrict)" != "0" ]]; then
     info "Fix kernel dmesg restriction"
     echo 0 > /proc/sys/kernel/dmesg_restrict
     echo "kernel.dmesg_restrict=0" >> /etc/sysctl.conf
