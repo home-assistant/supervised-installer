@@ -64,6 +64,13 @@ else
   fi
 fi
 
+# Check dmesg access
+if [[ "$(sysctl --values kernel.dmesg_restrict)" != "0" ]]; then
+    info "Fix kernel dmesg restriction"
+    echo 0 > /proc/sys/kernel/dmesg_restrict
+    echo "kernel.dmesg_restrict=0" >> /etc/sysctl.conf
+fi
+
 # Parse command line parameters
 while [[ $# -gt 0 ]]; do
     arg="$1"
