@@ -52,4 +52,4 @@ curl -sL https://raw.githubusercontent.com/home-assistant/supervised-installer/m
 
 ## Troubleshooting
 
-If somethings going wrong, use `journalctl -f` to get your system logs. If you are not familiar with Linux and how you can fix issues, we recommend do use our Home Assistant OS.
+If somethings going wrong, use `journalctl -f` to get your system logs. If you are not familiar with Linux and how you can fix issues, we recommend to use our Home Assistant OS.
