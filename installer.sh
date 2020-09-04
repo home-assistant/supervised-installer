@@ -54,10 +54,10 @@ EOF
   info "Restarting docker service"
   systemctl restart "$DOCKER_SERVICE"
 else
-  STORRAGE_DRIVER=$(docker info -f "{{json .}}" | jq -r -e .Driver)
+  STORAGE_DRIVER=$(docker info -f "{{json .}}" | jq -r -e .Driver)
   LOGGING_DRIVER=$(docker info -f "{{json .}}" | jq -r -e .LoggingDriver)
-  if [[ "$STORRAGE_DRIVER" != "overlay2" ]]; then 
-    warn "Docker is using $STORRAGE_DRIVER and not 'overlay2' as the storrage driver, this is not supported."
+  if [[ "$STORAGE_DRIVER" != "overlay2" ]]; then 
+    warn "Docker is using $STORAGE_DRIVER and not 'overlay2' as the storage driver, this is not supported."
   fi
   if [[ "$LOGGING_DRIVER"  != "journald" ]]; then 
     warn "Docker is using $LOGGING_DRIVER and not 'journald' as the logging driver, this is not supported."
