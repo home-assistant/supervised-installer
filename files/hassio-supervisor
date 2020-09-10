@@ -29,6 +29,7 @@ runSupervisor() {
         $APPARMOR \
         --security-opt seccomp=unconfined \
         -v /run/docker.sock:/run/docker.sock \
+        -v ~/.docker/config.json:/etc/dockerconfig \
         -v /run/dbus:/run/dbus \
         -v /etc/machine-id:/etc/machine-id:ro \
         -v "${HASSIO_DATA}":/data:rw \
