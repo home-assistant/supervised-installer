@@ -1,9 +1,56 @@
 #!/usr/bin/env bash
+
+systemctl status ModemManager | grep 'active (running)' > /dev/null 2>&1
+
+if [ $? != 0 ]
+then
+        systemctl disable ModemManager > /dev/null
+        systemctl stop ModemManager > /dev/null
+fi
+
 set -e
 
 function info { echo -e "[Info] $*"; }
 function error { echo -e "[Error] $*"; exit 1; }
 function warn  { echo -e "[Warning] $*"; }
+
+# Install required dependencies
+test $? -eq 0 || exit 1 "you should have sudo priveledge to run this script"
+
+info ""
+info ""
+info "Installing Home Assistant dependencies"
+info ""
+info ""
+
+while read -r p ; do sudo apt-get install -y $p ; done < <(cat << "EOF"
+	software-properties-common
+	apparmor-utils 
+	apt-transport-https 
+	avahi-daemon 
+	ca-certificates 
+	curl 
+	dbus 
+	jq 
+	network-manager
+EOF
+)
+
+# Install Docker-ce
+info ""
+info ""
+info "Installing Docker-ce"
+info ""
+info ""
+
+curl -fsSL get.docker.com | sh
+
+# Install Home Assistant Supervised
+info ""
+info ""
+info "Now installing Home Assistant Supervised"
+info ""
+info ""
 
 warn ""
 warn "If you want more control over your own system, run"
