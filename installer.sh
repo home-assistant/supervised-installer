@@ -32,7 +32,7 @@ FILE_DOCKER_CONF="/etc/docker/daemon.json"
 FILE_NM_CONF="/etc/NetworkManager/NetworkManager.conf"
 FILE_NM_CONNECTION="/etc/NetworkManager/system-connections/default"
 
-URL_RAW_BASE="https://raw.githubusercontent.com/home-assistant/supervised-installer/nmconfig/files"
+URL_RAW_BASE="https://raw.githubusercontent.com/home-assistant/supervised-installer/master/files"
 URL_VERSION="https://version.home-assistant.io/stable.json"
 URL_DOCKER_DAEMON="${URL_RAW_BASE}/docker_daemon.json"
 URL_NM_CONF="${URL_RAW_BASE}/NetworkManager.conf"
@@ -243,6 +243,7 @@ info "Installing the 'ha' cli"
 curl -sL ${URL_HA} > "${PREFIX}/bin/ha"
 chmod a+x "${PREFIX}/bin/ha"
 
+info
 info "Home Assistant supervised is now installed"
 info "First setup will take some time, when it's ready you can reach it here:"
 info "http://${IP_ADDRESS}:8123"
