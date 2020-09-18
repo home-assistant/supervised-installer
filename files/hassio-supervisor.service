@@ -1,15 +1,15 @@
 [Unit]
 Description=Hass.io supervisor
-Requires=%%DOCKER_SERVICE%%
-After=%%DOCKER_SERVICE%% dbus.socket
+Requires=%%SERVICE_DOCKER%%
+After=%%SERVICE_DOCKER%% dbus.socket
 
 [Service]
 Type=simple
 Restart=always
 RestartSec=5s
-ExecStartPre=-%%DOCKER_BINARY%% stop hassio_supervisor
-ExecStart=%%HASSIO_BINARY%%
-ExecStop=-%%DOCKER_BINARY%% stop hassio_supervisor
+ExecStartPre=-%%BINARY_DOCKER%% stop hassio_supervisor
+ExecStart=%%BINARY_HASSIO%%
+ExecStop=-%%BINARY_DOCKER%% stop hassio_supervisor
 
 [Install]
 WantedBy=multi-user.target
