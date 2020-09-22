@@ -9,7 +9,7 @@ This installation method provides the full Home Assistant experience on a regula
 By not using the Home Assistant Operating System, the user is responsible for making sure that all required components are installed and maintained. Required components and their versions will change over time. Home Assistant Supervised is provided as-is as a foundation for community supported do-it-yourself solutions. We only accept bug reports for issues that have been reproduced on a freshly installed, fully updated Debian with no additional packages.
 
 This method is considered advanced and should only be used if one is an expert in managing a Linux operating system, Docker and networking.
-## Prequesite Installation
+## Prerequesite Installation
 
 Run as root (sudo su):
 ```bash
