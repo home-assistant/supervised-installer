@@ -1,7 +1,7 @@
 [Unit]
 Description=Hass.io AppArmor
 Wants=hassio-supervisor.service
-Before=%%DOCKER_SERVICE%% hassio-supervisor.service
+Before=%%SERVICE_DOCKER%% hassio-supervisor.service
 
 [Service]
 Type=oneshot
