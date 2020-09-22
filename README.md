@@ -13,7 +13,7 @@ This method is considered advanced and should only be used if one is an expert i
 
 Run as root (sudo su):
 ```bash
-apt install jq avahi-daemon network manager
+apt install jq avahi-daemon network-manager
 ```
 Now follow the debian repository install instructions for Docker Community Edition:  https://docs.docker.com/engine/install/debian/
 
