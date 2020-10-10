@@ -56,7 +56,7 @@ command -v dbus-daemon > /dev/null 2>&1 || MISSING_PACAKGES+=("dbus")
 
 
 if [ ! -z "${MISSING_PACAKGES}" ]; then
-    warn "The folowing is missing on the host and needs "
+    warn "The following is missing on the host and needs "
     warn "to be installed and configured before running this script again"
     error "missing: ${MISSING_PACAKGES[@]}"
 fi
