@@ -102,7 +102,7 @@ if [ ! -f "$FILE_NM_CONNECTION" ]; then
     curl -sL "${URL_NM_CONNECTION}" > "${FILE_NM_CONNECTION}"
 fi
 
-warn "Changes is needed to the /etc/network/interfaces file"
+warn "Changes are needed to the /etc/network/interfaces file"
 info "If you have modified the network on the host manualy, those can now be overwritten"
 info "If you do not overwrite this now you need to manually adjust it later"
 info "Do you want to proceed with that? [N/y] "
