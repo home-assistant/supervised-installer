@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-declare -a MISSING_PACAKGES
+declare -a MISSING_PACKAGES
 
 function info { echo -e "\e[32m[info] $*\e[39m"; }
 function warn  { echo -e "\e[33m[warn] $*\e[39m"; }
@@ -47,20 +47,20 @@ URL_SERVICE_HASSIO="${URL_RAW_BASE}/hassio-supervisor.service"
 URL_APPARMOR_PROFILE="https://version.home-assistant.io/apparmor.txt"
 
 # Check env
-command -v systemctl > /dev/null 2>&1 || MISSING_PACAKGES+=("systemd")
-command -v nmcli > /dev/null 2>&1 || MISSING_PACAKGES+=("NetworkManager")
-command -v apparmor_parser > /dev/null 2>&1 || MISSING_PACAKGES+=("AppArmor")
-command -v docker > /dev/null 2>&1 || MISSING_PACAKGES+=("docker")
-command -v jq > /dev/null 2>&1 || MISSING_PACAKGES+=("jq")
-command -v curl > /dev/null 2>&1 || MISSING_PACAKGES+=("curl")
-command -v avahi-daemon > /dev/null 2>&1 || MISSING_PACAKGES+=("avahi")
-command -v dbus-daemon > /dev/null 2>&1 || MISSING_PACAKGES+=("dbus")
+command -v systemctl > /dev/null 2>&1 || MISSING_PACKAGES+=("systemd")
+command -v nmcli > /dev/null 2>&1 || MISSING_PACKAGES+=("NetworkManager")
+command -v apparmor_parser > /dev/null 2>&1 || MISSING_PACKAGES+=("AppArmor")
+command -v docker > /dev/null 2>&1 || MISSING_PACKAGES+=("docker")
+command -v jq > /dev/null 2>&1 || MISSING_PACKAGES+=("jq")
+command -v curl > /dev/null 2>&1 || MISSING_PACKAGES+=("curl")
+command -v avahi-daemon > /dev/null 2>&1 || MISSING_PACKAGES+=("avahi")
+command -v dbus-daemon > /dev/null 2>&1 || MISSING_PACKAGES+=("dbus")
 
 
-if [ ! -z "${MISSING_PACAKGES}" ]; then
+if [ ! -z "${MISSING_PACKAGES}" ]; then
     warn "The following is missing on the host and needs "
     warn "to be installed and configured before running this script again"
-    error "missing: ${MISSING_PACAKGES[@]}"
+    error "missing: ${MISSING_PACKAGES[@]}"
 fi
 
 # Check if Modem Manager is enabled
