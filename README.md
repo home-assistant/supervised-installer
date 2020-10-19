@@ -31,7 +31,7 @@ you can set these parameters by appending ` --<parameter> <value>` like:
 
 ```bash
 curl -Lo installer.sh https://raw.githubusercontent.com/home-assistant/supervised-installer/master/installer.sh
-bash installer.sh --mmachine MY_MACHINE
+bash installer.sh --machine MY_MACHINE
 ```
 
 ## Supported Machine types
