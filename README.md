@@ -15,7 +15,7 @@ This method is considered advanced and should only be used if one is an expert i
 Run as root (sudo su):
 
 ```bash
-wget https://raw.githubusercontent.com/home-assistant/supervised-installer/master/installer.sh
+curl -Lo installer.sh https://raw.githubusercontent.com/home-assistant/supervised-installer/master/installer.sh
 bash installer.sh
 ```
 
@@ -30,7 +30,7 @@ bash installer.sh
 you can set these parameters by appending ` --<parameter> <value>` like:
 
 ```bash
-wget https://raw.githubusercontent.com/home-assistant/supervised-installer/master/installer.sh
+curl -Lo installer.sh https://raw.githubusercontent.com/home-assistant/supervised-installer/master/installer.sh
 bash installer.sh --mmachine MY_MACHINE
 ```
 
