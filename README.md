@@ -15,7 +15,8 @@ This method is considered advanced and should only be used if one is an expert i
 Run as root (sudo su):
 
 ```bash
-curl -sL https://raw.githubusercontent.com/home-assistant/supervised-installer/master/installer.sh | bash -s
+curl -Lo installer.sh https://raw.githubusercontent.com/home-assistant/supervised-installer/master/installer.sh
+bash installer.sh
 ```
 
 ### Command line arguments
@@ -26,10 +27,11 @@ curl -sL https://raw.githubusercontent.com/home-assistant/supervised-installer/m
 | -p \| --prefix     | /usr                 | Binary prefix for hass.io installation                 |
 | -s \| --sysconfdir | /etc                 | Configuration directory for hass.io installation       |
 
-you can set these parameters by appending ` -- <parameter> <value>` like:
+you can set these parameters by appending ` --<parameter> <value>` like:
 
 ```bash
-curl -sL https://raw.githubusercontent.com/home-assistant/supervised-installer/master/installer.sh | bash -s -- -m MY_MACHINE
+curl -Lo installer.sh https://raw.githubusercontent.com/home-assistant/supervised-installer/master/installer.sh
+bash installer.sh --mmachine MY_MACHINE
 ```
 
 ## Supported Machine types
