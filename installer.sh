@@ -106,7 +106,7 @@ warn "Changes are needed to the /etc/network/interfaces file"
 info "If you have modified the network on the host manualy, those can now be overwritten"
 info "If you do not overwrite this now you need to manually adjust it later"
 info "Do you want to proceed with that? [N/y] "
-read answer
+read answer < /dev/tty
 
 if [[ "$answer" =~ "y" ]] || [[ "$answer" =~ "Y" ]]; then
     info "Replacing /etc/network/interfaces"
