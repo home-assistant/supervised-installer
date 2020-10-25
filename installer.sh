@@ -71,7 +71,7 @@ fi
 # Detect wrong docker logger config
 if [ ! -f "$FILE_DOCKER_CONF" ]; then
   # Write default configuration
-  info "Creating default docker deamon configuration $FILE_DOCKER_CONF"
+  info "Creating default docker daemon configuration $FILE_DOCKER_CONF"
   curl -sL ${URL_DOCKER_DAEMON} > "${FILE_DOCKER_CONF}"
 
   # Restart Docker service
