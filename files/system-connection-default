@@ -1,6 +1,6 @@
 [connection]
 id=Supervisor default
-uuid=f62bf7c2-e565-49ff-bbfc-a4cf791e6add
+uuid=f35ac84e-420b-4003-a6d9-9700e8a32e54
 type=802-3-ethernet
 llmnr=2
 mdns=2
