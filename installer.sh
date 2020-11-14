@@ -27,6 +27,7 @@ DOCKER_REPO=homeassistant
 
 SERVICE_DOCKER="docker.service"
 SERVICE_NM="NetworkManager.service"
+SERVICE_SYSTEMD_RESOLVED="systemd-resolved.service"
 
 FILE_DOCKER_CONF="/etc/docker/daemon.json"
 FILE_INTERFACES="/etc/network/interfaces"
@@ -110,6 +111,12 @@ read answer < /dev/tty
 if [[ "$answer" =~ "y" ]] || [[ "$answer" =~ "Y" ]]; then
     info "Replacing /etc/network/interfaces"
     curl -sL "${URL_INTERFACES}" > "${FILE_INTERFACES}";
+fi
+
+if [ "$(systemctl is-active --quiet ${SERVICE_SYSTEMD_RESOLVED})" !=  "active" ]; then
+    info "Enable and start systemd-resolved"
+    systemctl enable "${SERVICE_SYSTEMD_RESOLVED}" > /dev/null 2>&1;
+    systemctl start "${SERVICE_SYSTEMD_RESOLVED}"
 fi
 
 info "Restarting NetworkManager"
