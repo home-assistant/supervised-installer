@@ -24,8 +24,8 @@ runSupervisor() {
     docker rm --force hassio_supervisor || true
 
     # shellcheck disable=SC2086
-    docker run --name hassio_supervisor \
-        --privileged \
+    docker run --privileged \
+        --name hassio_supervisor \
         $APPARMOR \
         --security-opt seccomp=unconfined \
         -v /run/docker.sock:/run/docker.sock \
