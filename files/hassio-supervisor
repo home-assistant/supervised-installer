@@ -12,7 +12,7 @@ DATA="$(jq --raw-output '.data // "/usr/share/hassio"' ${CONFIG_FILE})"
 if command -v apparmor_parser > /dev/null 2>&1 && grep hassio-supervisor /sys/kernel/security/apparmor/profiles > /dev/null 2>&1; then
     APPARMOR="--security-opt apparmor=hassio-supervisor"
 else
-    APPARMOR="--security-opt apparmor:unconfined"
+    APPARMOR="--security-opt apparmor=unconfined"
 fi
 
 # Init supervisor
