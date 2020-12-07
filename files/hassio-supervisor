@@ -8,13 +8,6 @@ SUPERVISOR="$(jq --raw-output '.supervisor' ${CONFIG_FILE})"
 MACHINE="$(jq --raw-output '.machine' ${CONFIG_FILE})"
 DATA="$(jq --raw-output '.data // "/usr/share/hassio"' ${CONFIG_FILE})"
 
-# AppArmor Support
-if command -v apparmor_parser > /dev/null 2>&1 && grep hassio-supervisor /sys/kernel/security/apparmor/profiles > /dev/null 2>&1; then
-    APPARMOR="--security-opt apparmor=hassio-supervisor"
-else
-    APPARMOR="--security-opt apparmor:unconfined"
-fi
-
 # Init supervisor
 HASSIO_DATA=${DATA}
 HASSIO_IMAGE_ID=$(docker inspect --format='{{.Id}}' "${SUPERVISOR}")
@@ -26,7 +19,7 @@ runSupervisor() {
     # shellcheck disable=SC2086
     docker run --name hassio_supervisor \
         --privileged \
-        $APPARMOR \
+        --security-opt apparmor=hassio-supervisor \
         --security-opt seccomp=unconfined \
         -v /run/docker.sock:/run/docker.sock \
         -v /run/dbus:/run/dbus \
