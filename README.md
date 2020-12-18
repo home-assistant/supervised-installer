@@ -20,12 +20,14 @@ bash installer.sh
 ```
 
 ### Command line arguments
-| argument           | default                                                                                                                                                                             | description                                            |
-|--------------------|----------------------|--------------------------------------------------------|
-| -m \| --machine    |                      | On a special platform they need set a machine type use |
-| -d \| --data-share | $PREFIX/share/hassio | data folder for hass.io installation                   |
-| -p \| --prefix     | /usr                 | Binary prefix for hass.io installation                 |
-| -s \| --sysconfdir | /etc                 | Configuration directory for hass.io installation       |
+
+| argument           | default              | description                                                                |
+| ------------------ | -------------------- | -------------------------------------------------------------------------- |
+| -a \| --auto       |                      | Don't ask for input, assume yes to all questions. For automated installers |
+| -m \| --machine    |                      | On a special platform they need set a machine type use                     |
+| -d \| --data-share | $PREFIX/share/hassio | data folder for hass.io installation                                       |
+| -p \| --prefix     | /usr                 | Binary prefix for hass.io installation                                     |
+| -s \| --sysconfdir | /etc                 | Configuration directory for hass.io installation                           |
 
 you can set these parameters by appending ` --<parameter> <value>` like:
 
