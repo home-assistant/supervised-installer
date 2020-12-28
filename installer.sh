@@ -21,7 +21,7 @@ ARCH=$(uname -m)
 
 IP_ADDRESS=$(hostname -I | awk '{ print $1 }')
 
-BINARY_DOCKER=/usr/bin/docker
+BINARY_DOCKER=$(command -v docker)
 
 DOCKER_REPO=homeassistant
 
