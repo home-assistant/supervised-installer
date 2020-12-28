@@ -33,6 +33,11 @@ FILE_INTERFACES="/etc/network/interfaces"
 FILE_NM_CONF="/etc/NetworkManager/NetworkManager.conf"
 FILE_NM_CONNECTION="/etc/NetworkManager/system-connections/default"
 
+if [[ "$BINARY_DOCKER" == "/snap/bin/docker" ]]; then
+    SERVICE_DOCKER="snap.docker.dockerd.service"
+    FILE_DOCKER_CONF="$(snap run --shell docker -c 'printenv SNAP_DATA')/config/daemon.json"
+fi
+
 URL_RAW_BASE="https://raw.githubusercontent.com/home-assistant/supervised-installer/master/files"
 URL_VERSION="https://version.home-assistant.io/stable.json"
 URL_BIN_APPARMOR="${URL_RAW_BASE}/hassio-apparmor"
