@@ -84,10 +84,10 @@ if [ ! -f "$FILE_DOCKER_CONF" ]; then
 else
   STORAGE_DRIVER=$(docker info -f "{{json .}}" | jq -r -e .Driver)
   LOGGING_DRIVER=$(docker info -f "{{json .}}" | jq -r -e .LoggingDriver)
-  if [[ "$STORAGE_DRIVER" != "overlay2" ]]; then 
+  if [[ "$STORAGE_DRIVER" != "overlay2" ]]; then
     warn "Docker is using $STORAGE_DRIVER and not 'overlay2' as the storage driver, this is not supported."
   fi
-  if [[ "$LOGGING_DRIVER"  != "journald" ]]; then 
+  if [[ "$LOGGING_DRIVER"  != "journald" ]]; then
     warn "Docker is using $LOGGING_DRIVER and not 'journald' as the logging driver, this is not supported."
   fi
 fi
