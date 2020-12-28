@@ -22,6 +22,7 @@ ARCH=$(uname -m)
 IP_ADDRESS=$(hostname -I | awk '{ print $1 }')
 
 BINARY_DOCKER=$(command -v docker)
+DOCKER_PREFIX="${BINARY_DOCKER/\/bin\/docker}"
 
 DOCKER_REPO=homeassistant
 
@@ -36,6 +37,8 @@ FILE_NM_CONNECTION="/etc/NetworkManager/system-connections/default"
 if [[ "$BINARY_DOCKER" == "/snap/bin/docker" ]]; then
     SERVICE_DOCKER="snap.docker.dockerd.service"
     FILE_DOCKER_CONF="$(snap run --shell docker -c 'printenv SNAP_DATA')/config/daemon.json"
+elif [[ "$DOCKER_PREFIX" != "/usr" ]]; then
+    FILE_DOCKER_CONF="$DOCKER_PREFIX/$FILE_DOCKER_CONF"
 fi
 
 URL_RAW_BASE="https://raw.githubusercontent.com/home-assistant/supervised-installer/master/files"
