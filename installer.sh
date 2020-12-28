@@ -193,7 +193,7 @@ if [ ! -d "$DATA_SHARE" ]; then
 fi
 
 # Read infos from web
-HASSIO_VERSION=$(curl -s $URL_VERSION | jq -e -r '.supervisor')
+HASSIO_VERSION=$(curl -sL $URL_VERSION | jq -e -r '.supervisor')
 
 ##
 # Write configuration
