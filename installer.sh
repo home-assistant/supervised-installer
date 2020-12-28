@@ -214,6 +214,7 @@ docker tag "$HASSIO_DOCKER:$HASSIO_VERSION" "$HASSIO_DOCKER:latest" > /dev/null
 ##
 # Install Hass.io Supervisor
 info "Install supervisor startup scripts"
+mkdir -p "${PREFIX}/sbin"
 curl -sL ${URL_BIN_HASSIO} > "${PREFIX}/sbin/hassio-supervisor"
 curl -sL ${URL_SERVICE_HASSIO} > "${SYSCONFDIR}/systemd/system/hassio-supervisor.service"
 
@@ -252,6 +253,7 @@ systemctl start hassio-supervisor.service
 ##
 # Setup CLI
 info "Installing the 'ha' cli"
+mkdir -p "${PREFIX}/bin"
 curl -sL ${URL_HA} > "${PREFIX}/bin/ha"
 chmod a+x "${PREFIX}/bin/ha"
 
