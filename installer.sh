@@ -63,7 +63,7 @@ if [ ! -z "${MISSING_PACKAGES}" ]; then
 fi
 
 # Check if Modem Manager is enabled
-if systemctl list-unit-files ModemManager.service | grep enabled > /dev/null 2>&1; then
+if systemctl is-enabled ModemManager.service &> /dev/null; then
     warn "ModemManager service is enabled. This might cause issue when using serial devices."
 fi
 
