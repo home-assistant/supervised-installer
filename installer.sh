@@ -212,7 +212,7 @@ fi
 i=0; while [ ${i} -le 10 ] && [ -z "${HASSIO_VERSION:-}" ]; do
   HASSIO_VERSION=$(curl -sL $URL_VERSION | jq -e -r '.supervisor')
   if [ ! -z "${HASSIO_VERSION:-}" ]; then break; fi
-  info "Waiting on ${URL_VERSION}; sleeping for $((i*2)) seconds""
+  info "Waiting on ${URL_VERSION}; sleeping for $((i*2)) seconds"
   sleep $((i*2))
   i=$((i+1))
 done
