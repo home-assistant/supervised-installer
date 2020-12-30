@@ -209,7 +209,16 @@ if [ ! -d "$DATA_SHARE" ]; then
 fi
 
 # Read infos from web
-HASSIO_VERSION=$(curl -sL $URL_VERSION | jq -e -r '.supervisor')
+i=0; while [ ${i} -le 10 ] && [ -z "${HASSIO_VERSION:-}" ]; do
+  HASSIO_VERSION=$(curl -sL $URL_VERSION | jq -e -r '.supervisor')
+  if [ ! -z "${HASSIO_VERSION:-}" ]; then break; fi
+  info "Waiting on ${URL_VERSION}; sleeping for $((i*2)) seconds""
+  sleep $((i*2))
+  i=$((i+1))
+done
+if [ -z "${HASSIO_VERSION:-}" ]; then 
+  error "Unable to retrieve HASSIO_VERSION from ${URL_VERSION}"
+fi
 
 ##
 # Write configuration
