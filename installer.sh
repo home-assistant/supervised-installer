@@ -7,15 +7,57 @@ function info { echo -e "\e[32m[info] $*\e[39m"; }
 function warn  { echo -e "\e[33m[warn] $*\e[39m"; }
 function error { echo -e "\e[31m[error] $*\e[39m"; exit 1; }
 
+BATCH_MODE=0
+# Parse command line parameters
+while [[ $# -gt 0 ]]; do
+    arg="$1"
+
+    case $arg in
+        -m|--machine)
+            MACHINE=$2
+            shift
+            ;;
+        -d|--data-share)
+            DATA_SHARE=$2
+            shift
+            ;;
+        -p|--prefix)
+            PREFIX=$2
+            shift
+            ;;
+        -s|--sysconfdir)
+            SYSCONFDIR=$2
+            shift
+            ;;
+        -b|--batch)
+            BATCH_MODE=1
+            ;;
+        *)
+            error "Unrecognized option $1"
+            ;;
+    esac
+    shift
+done
+
+PREFIX=${PREFIX:-/usr}
+SYSCONFDIR=${SYSCONFDIR:-/etc}
+DATA_SHARE=${DATA_SHARE:-$PREFIX/share/hassio}
+CONFIG=$SYSCONFDIR/hassio.json
+
+
 warn ""
 warn "If you want more control over your own system, run"
 warn "Home Assistant as a VM or run Home Assistant Core"
 warn "via a Docker container."
 warn ""
-warn "If you want to abort, hit ctrl+c within 10 seconds..."
-warn ""
+if [ $BATCH_MODE -eq 0 ]; then
+    warn "If you want to abort, hit ctrl+c within 10 seconds..."
+    warn ""
 
-sleep 10
+    sleep 10
+else
+    warn "Batch mode enabled, continuing..."
+fi
 
 ARCH=$(uname -m)
 
@@ -102,51 +144,23 @@ if [ ! -f "$FILE_NM_CONNECTION" ]; then
 fi
 
 warn "Changes are needed to the /etc/network/interfaces file"
-info "If you have modified the network on the host manualy, those can now be overwritten"
-info "If you do not overwrite this now you need to manually adjust it later"
-info "Do you want to proceed with overwriting the /etc/network/interfaces file? [N/y] "
-read answer < /dev/tty
+if [ $BATCH_MODE -eq 0 ]; then
+    info "If you have modified the network on the host manualy, those can now be overwritten"
+    info "If you do not overwrite this now you need to manually adjust it later"
+    info "Do you want to proceed with overwriting the /etc/network/interfaces file? [N/y] "
+    read answer < /dev/tty
 
-if [[ "$answer" =~ "y" ]] || [[ "$answer" =~ "Y" ]]; then
-    info "Replacing /etc/network/interfaces"
+    if [[ "$answer" =~ "y" ]] || [[ "$answer" =~ "Y" ]]; then
+        info "Replacing /etc/network/interfaces"
+        curl -sL "${URL_INTERFACES}" > "${FILE_INTERFACES}";
+    fi
+else
+    info "Batch mode enabled, replacing /etc/network/interfaces"
     curl -sL "${URL_INTERFACES}" > "${FILE_INTERFACES}";
 fi
 
 info "Restarting NetworkManager"
 systemctl restart "${SERVICE_NM}"
-
-# Parse command line parameters
-while [[ $# -gt 0 ]]; do
-    arg="$1"
-
-    case $arg in
-        -m|--machine)
-            MACHINE=$2
-            shift
-            ;;
-        -d|--data-share)
-            DATA_SHARE=$2
-            shift
-            ;;
-        -p|--prefix)
-            PREFIX=$2
-            shift
-            ;;
-        -s|--sysconfdir)
-            SYSCONFDIR=$2
-            shift
-            ;;
-        *)
-            error "Unrecognized option $1"
-            ;;
-    esac
-    shift
-done
-
-PREFIX=${PREFIX:-/usr}
-SYSCONFDIR=${SYSCONFDIR:-/etc}
-DATA_SHARE=${DATA_SHARE:-$PREFIX/share/hassio}
-CONFIG=$SYSCONFDIR/hassio.json
 
 # Generate hardware options
 case $ARCH in
