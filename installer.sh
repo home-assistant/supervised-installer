@@ -98,10 +98,10 @@ command -v curl > /dev/null 2>&1 || MISSING_PACKAGES+=("curl")
 command -v dbus-daemon > /dev/null 2>&1 || MISSING_PACKAGES+=("dbus")
 
 
-if [ ! -z "${MISSING_PACKAGES}" ]; then
+if [ -n "${MISSING_PACKAGES[*]}" ]; then
     warn "The following is missing on the host and needs "
     warn "to be installed and configured before running this script again"
-    error "missing: ${MISSING_PACKAGES[@]}"
+    error "missing: ${MISSING_PACKAGES[*]}"
 fi
 
 # Check if Modem Manager is enabled
@@ -148,6 +148,7 @@ if [ $BATCH_MODE -eq 0 ]; then
     info "If you have modified the network on the host manualy, those can now be overwritten"
     info "If you do not overwrite this now you need to manually adjust it later"
     info "Do you want to proceed with overwriting the /etc/network/interfaces file? [N/y] "
+    # shellcheck disable=SC2162
     read answer < /dev/tty
 
     if [[ "$answer" =~ "y" ]] || [[ "$answer" =~ "Y" ]]; then
