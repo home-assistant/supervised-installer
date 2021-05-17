@@ -192,6 +192,13 @@ if [ ! -d "$DATA_SHARE" ]; then
     mkdir -p "$DATA_SHARE"
 fi
 
+if [ ! -d "${PREFIX}/sbin" ]; then
+    mkdir -p "${PREFIX}/sbin"
+fi
+
+if [ ! -d "${PREFIX}/bin" ]; then
+    mkdir -p "${PREFIX}/bin"
+fi
 # Read infos from web
 HASSIO_VERSION=$(curl -s $URL_VERSION | jq -e -r '.supervisor')
 
