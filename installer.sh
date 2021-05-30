@@ -114,6 +114,7 @@ fi
 
 info "Restarting NetworkManager"
 systemctl restart "${SERVICE_NM}"
+sleep 5 #wait wifi reconnection
 
 # Parse command line parameters
 while [[ $# -gt 0 ]]; do
