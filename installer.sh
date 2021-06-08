@@ -114,7 +114,8 @@ fi
 
 info "Restarting NetworkManager"
 systemctl restart "${SERVICE_NM}"
-
+info "Waiting 5 seconds for NetworkManager to load..."
+sleep 5
 # Parse command line parameters
 while [[ $# -gt 0 ]]; do
     arg="$1"
