@@ -95,20 +95,31 @@ if [[ "$(sysctl --values kernel.dmesg_restrict)" != "0" ]]; then
 fi
 
 # Create config for NetworkManager
-info "Creating NetworkManager configuration"
-curl -sL "${URL_NM_CONF}" > "${FILE_NM_CONF}"
-if [ ! -f "$FILE_NM_CONNECTION" ]; then
-    curl -sL "${URL_NM_CONNECTION}" > "${FILE_NM_CONNECTION}"
+warn "Changes are needed to the /etc/NetworkManager/ config files"
+info "If you have modified the NetworkManager on the host manualy, those can now be overwritten"
+info "If you choose to overwrite it your current file will be saved as /etc/NetworkManager/NetworkManager.conf.ha_bck"
+warn "If you are a raspian user beware this might cause your wifi MAC address to be randomized, possibily making it difficult to ssh back to your pi"
+info "Do you want to proceed with overwriting the /etc/NetworkManager/NetworkManager.conf file? [N/y] "
+read nmanswer < /dev/tty
+if [[ "$nmanswer" =~ "y" ]] || [[ "$nmanswer" =~ "Y" ]]; then
+    info "Creating NetworkManager configuration"
+    cp "${FILE_NM_CONF}" "${FILE_NM_CONF}.ha_bck"
+    curl -sL "${URL_NM_CONF}" > "${FILE_NM_CONF}"
+    if [ ! -f "$FILE_NM_CONNECTION" ]; then
+        curl -sL "${URL_NM_CONNECTION}" > "${FILE_NM_CONNECTION}"
+    fi
 fi
 
 warn "Changes are needed to the /etc/network/interfaces file"
 info "If you have modified the network on the host manualy, those can now be overwritten"
 info "If you do not overwrite this now you need to manually adjust it later"
+info "If you choose to overwrite it your current file will be saved as /etc/network/interfaces.ha_bck"
 info "Do you want to proceed with overwriting the /etc/network/interfaces file? [N/y] "
 read answer < /dev/tty
 
 if [[ "$answer" =~ "y" ]] || [[ "$answer" =~ "Y" ]]; then
     info "Replacing /etc/network/interfaces"
+    cp "${FILE_INTERFACES}" "${FILE_INTERFACES}.ha_bck"
     curl -sL "${URL_INTERFACES}" > "${FILE_INTERFACES}";
 fi
 
