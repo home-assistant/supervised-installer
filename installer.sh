@@ -115,6 +115,9 @@ fi
 info "Restarting NetworkManager"
 systemctl restart "${SERVICE_NM}"
 
+info "Waiting for network connection"
+until ping -c 1 -n -w 1 www.docker.io 2> /dev/null | grep "bytes of data" 2&1> /dev/null; do sleep 2; done
+
 # Parse command line parameters
 while [[ $# -gt 0 ]]; do
     arg="$1"
