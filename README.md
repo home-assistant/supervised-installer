@@ -34,6 +34,11 @@ curl -Lo installer.sh https://raw.githubusercontent.com/home-assistant/supervise
 bash installer.sh --machine MY_MACHINE
 ```
 
+or with one line
+```bash
+curl -sfL https://raw.githubusercontent.com/home-assistant/supervised-installer/master/installer.sh | bash -s --machine MY_MACHINE
+```
+
 ## Supported Machine types
 
 - intel-nuc
