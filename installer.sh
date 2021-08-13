@@ -34,7 +34,8 @@ FILE_NM_CONF="/etc/NetworkManager/NetworkManager.conf"
 FILE_NM_CONNECTION="/etc/NetworkManager/system-connections/default"
 
 URL_RAW_BASE="https://raw.githubusercontent.com/home-assistant/supervised-installer/master/files"
-URL_VERSION="https://version.home-assistant.io/stable.json"
+URL_VERSION_HOST="version.home-assistant.io"
+URL_VERSION="https://${URL_VERSION_HOST}/stable.json"
 URL_BIN_APPARMOR="${URL_RAW_BASE}/hassio-apparmor"
 URL_BIN_HASSIO="${URL_RAW_BASE}/hassio-supervisor"
 URL_DOCKER_DAEMON="${URL_RAW_BASE}/docker_daemon.json"
@@ -79,10 +80,10 @@ if [ ! -f "$FILE_DOCKER_CONF" ]; then
 else
   STORAGE_DRIVER=$(docker info -f "{{json .}}" | jq -r -e .Driver)
   LOGGING_DRIVER=$(docker info -f "{{json .}}" | jq -r -e .LoggingDriver)
-  if [[ "$STORAGE_DRIVER" != "overlay2" ]]; then 
+  if [[ "$STORAGE_DRIVER" != "overlay2" ]]; then
     warn "Docker is using $STORAGE_DRIVER and not 'overlay2' as the storage driver, this is not supported."
   fi
-  if [[ "$LOGGING_DRIVER"  != "journald" ]]; then 
+  if [[ "$LOGGING_DRIVER"  != "journald" ]]; then
     warn "Docker is using $LOGGING_DRIVER and not 'journald' as the logging driver, this is not supported."
   fi
 fi
@@ -200,6 +201,10 @@ if [ ! -d "${PREFIX}/bin" ]; then
     mkdir -p "${PREFIX}/bin"
 fi
 # Read infos from web
+while ! ping -c 1 -W 1 ${URL_VERSION_HOST}; do
+    info "Waiting for ${URL_VERSION_HOST} - network interface might be down..."
+    sleep 2
+done
 HASSIO_VERSION=$(curl -s $URL_VERSION | jq -e -r '.supervisor')
 
 ##
