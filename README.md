@@ -36,7 +36,6 @@ bash installer.sh --machine MY_MACHINE
 
 ## Supported Machine types
 
-- intel-nuc
 - generic-x86-64
 - odroid-c2
 - odroid-n2
