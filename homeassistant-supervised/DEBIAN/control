@@ -2,7 +2,7 @@ Package: homeassistant-supervised
 Version: 2021.9.0
 Priority: optional
 Architecture: all
-Depends: curl, bash, docker, dbus, network-manager, apparmor, jq, systemd
+Depends: curl, bash, docker-ce, dbus, network-manager, apparmor, jq, systemd
 Maintainer: Matheson Steplock <https://mathesonsteplock.ca/>
 Homepage: https://www.home-assistant.io/
 Description: Home Assistant Supervised

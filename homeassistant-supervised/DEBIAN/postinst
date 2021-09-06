@@ -12,6 +12,10 @@ DOCKER_REPO=homeassistant
 SERVICE_DOCKER="docker.service"
 SERVICE_NM="NetworkManager.service"
 
+# Read infos from web
+URL_VERSION="https://version.home-assistant.io/stable.json"
+HASSIO_VERSION=$(curl -s $URL_VERSION | jq -e -r '.supervisor')
+
 # Restart NetworkManager
 info "Restarting NetworkManager"
 systemctl restart "${SERVICE_NM}"

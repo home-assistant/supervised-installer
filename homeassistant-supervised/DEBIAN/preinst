@@ -21,3 +21,16 @@ if [[ "$(sysctl --values kernel.dmesg_restrict)" != "0" ]]; then
     echo 0 > /proc/sys/kernel/dmesg_restrict
     echo "kernel.dmesg_restrict=0" >> /etc/sysctl.conf
 fi
+
+
+dpkg-divert --package homeassistant-supervised --add --rename \
+    --divert /etc/NetworkManager/NetworkManager.conf.real /etc/NetworkManager/NetworkManager.conf
+
+dpkg-divert --package homeassistant-supervised --add --rename \
+    --divert /etc/NetworkManager/system-connections/default.real /etc/NetworkManager/system-connections/default
+
+dpkg-divert --package homeassistant-supervised --add --rename \
+    --divert /etc/docker/daemon.json.real /etc/docker/daemon.json
+
+dpkg-divert --package homeassistant-supervised --add --rename \
+    --divert /etc/network/interfaces.real /etc/network/interfaces
