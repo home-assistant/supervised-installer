@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 set -e
+function info { echo -e "\e[32m[info] $*\e[39m"; }
+function warn  { echo -e "\e[33m[warn] $*\e[39m"; }
+function error { echo -e "\e[31m[error] $*\e[39m"; exit 1; }
 ARCH=$(uname -m)
 
 BINARY_DOCKER=/usr/bin/docker
@@ -8,6 +11,14 @@ DOCKER_REPO=homeassistant
 
 SERVICE_DOCKER="docker.service"
 SERVICE_NM="NetworkManager.service"
+
+# Restart NetworkManager
+info "Restarting NetworkManager"
+systemctl restart "${SERVICE_NM}"
+
+# Restart Docker service
+info "Restarting docker service"
+systemctl restart "$SERVICE_DOCKER"
 
 case $ARCH in
     "i386" | "i686")
@@ -53,10 +64,12 @@ cat > "$CONFIG" <<- EOF
 EOF
 
 # Pull Supervisor image
+info "Install supervisor Docker container"
 docker pull "$HASSIO_DOCKER:$HASSIO_VERSION" > /dev/null
 docker tag "$HASSIO_DOCKER:$HASSIO_VERSION" "$HASSIO_DOCKER:latest" > /dev/null
 
 # Install Supervisor
+info "Install supervisor startup scripts"
 sed -i "s,%%HASSIO_CONFIG%%,${CONFIG},g" "${PREFIX}"/sbin/hassio-supervisor
 sed -i -e "s,%%BINARY_DOCKER%%,${BINARY_DOCKER},g" \
        -e "s,%%SERVICE_DOCKER%%,${SERVICE_DOCKER},g" \
@@ -67,6 +80,7 @@ chmod a+x "${PREFIX}/sbin/hassio-supervisor"
 systemctl enable hassio-supervisor.service > /dev/null 2>&1;
 
 # Install AppArmor
+info "Install AppArmor scripts"
 sed -i "s,%%HASSIO_CONFIG%%,${CONFIG},g" "${PREFIX}/sbin/hassio-apparmor"
 sed -i -e "s,%%SERVICE_DOCKER%%,${SERVICE_DOCKER},g" \
     -e "s,%%HASSIO_APPARMOR_BINARY%%,${PREFIX}/sbin/hassio-apparmor,g" \
@@ -77,9 +91,11 @@ systemctl enable hassio-apparmor.service > /dev/null 2>&1;
 systemctl start hassio-apparmor.service
 
 # Start Supervisor 
+info "Start Home Assistant Supervised"
 systemctl start hassio-supervisor.service
 
 
 # Install HA CLI
+info "Installing the 'ha' cli"
 chmod a+x "${PREFIX}/bin/ha"
 
