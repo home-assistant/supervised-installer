@@ -15,6 +15,8 @@ SERVICE_NM="NetworkManager.service"
 # Read infos from web
 URL_VERSION="https://version.home-assistant.io/stable.json"
 HASSIO_VERSION=$(curl -s $URL_VERSION | jq -e -r '.supervisor')
+URL_APPARMOR_PROFILE="https://version.home-assistant.io/apparmor.txt"
+
 
 # Restart NetworkManager
 info "Restarting NetworkManager"
@@ -85,6 +87,7 @@ systemctl enable hassio-supervisor.service > /dev/null 2>&1;
 
 # Install AppArmor
 info "Install AppArmor scripts"
+curl -sL ${URL_APPARMOR_PROFILE} > "${DATA_SHARE}/apparmor/hassio-supervisor"
 sed -i "s,%%HASSIO_CONFIG%%,${CONFIG},g" "${PREFIX}/sbin/hassio-apparmor"
 sed -i -e "s,%%SERVICE_DOCKER%%,${SERVICE_DOCKER},g" \
     -e "s,%%HASSIO_APPARMOR_BINARY%%,${PREFIX}/sbin/hassio-apparmor,g" \
