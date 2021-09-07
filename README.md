@@ -53,6 +53,19 @@ bash installer.sh --machine MY_MACHINE
 - tinker
 - khadas-vim3
 
+## Demo
+Vagrant can create virtual mashine with the Home Assistant Supervisor. It can be used to play around with Home Assistant.
+All files are kept inside virtual machine besides backup directory. Backup directory is mapped to `vagrant/backup`.
+It can be used to restore Home Assistant after destroying virtual machine.
+
+Installation can be accessed by http://192.168.50.4:8123
+
+
+```bash
+cd vagrant
+vagrant up
+```
+
 ## Troubleshooting
 
 If somethings going wrong, use `journalctl -f` to get your system logs. If you are not familiar with Linux and how you can fix issues, we recommend to use our Home Assistant OS.
