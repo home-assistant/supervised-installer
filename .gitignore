@@ -1,1 +1,3 @@
 homeassistant-supervised.deb
+homeassistant-supervised/debian/.debhelper
+homeassistant-supervised/homeassistant-supervised
