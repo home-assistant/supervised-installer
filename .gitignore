@@ -1,3 +1,6 @@
 homeassistant-supervised.deb
 homeassistant-supervised/debian/.debhelper
-homeassistant-supervised/homeassistant-supervised
+homeassistant-supervised/debian/homeassistant-supervised*
+homeassistant-supervised_*
+homeassistant-supervised/debian/debhelper-build-stamp
+homeassistant-supervised/debian/files
