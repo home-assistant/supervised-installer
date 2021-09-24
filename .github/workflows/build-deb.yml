@@ -1,0 +1,19 @@
+
+name: Build Deb Package
+
+# yamllint disable-line rule:truthy
+on:
+  workflow_dispatch:
+  release:
+    types: ["published"]
+jobs:
+  build-deb-package:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Build Debian package
+        uses: dawidd6/action-debian-package@v1
+        with:
+          # Optional, relative to workspace directory
+          source_directory: homeassistant-supervised
