@@ -1,4 +1,6 @@
+Source: homeassistant-supervised
 Package: homeassistant-supervised
+Section: base
 Version: 2021.9.0
 Priority: optional
 Architecture: all
