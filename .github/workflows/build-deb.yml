@@ -17,7 +17,7 @@ jobs:
         with:
           # Optional, relative to workspace directory
           source_directory: homeassistant-supervised
-          # Optional, value from `debian/changelog` is used if not defined
-          os_distribution: bullseye
-          # Optional, target architecture, defaults to amd64
-          cpu_architecture: all
+          # # Optional, value from `debian/changelog` is used if not defined
+          # os_distribution: bullseye
+          # # Optional, target architecture, defaults to amd64
+          # cpu_architecture: all
