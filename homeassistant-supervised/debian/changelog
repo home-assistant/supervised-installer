@@ -1,3 +1,5 @@
 homeassistant-supervised (2021.9.0) UNRELEASED; urgency=low
 
- - Initial Release.
+  * Initial Release.
+
+  -- Matheson Steplock <https://mathesonsteplock.ca>  Fri, 24 Sept 2021 00:21:00 -0500

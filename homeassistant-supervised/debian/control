@@ -1,4 +1,8 @@
 Source: homeassistant-supervised
+Section: base
+Priority: optional
+Version: 2021.9.0
+Maintainer: Matheson Steplock <https://mathesonsteplock.ca/>
 
 Package: homeassistant-supervised
 Section: base
