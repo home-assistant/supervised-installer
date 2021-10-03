@@ -10,14 +10,12 @@ jobs:
   build-deb-package:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v2
-      - name: Build Debian package
-        uses: dawidd6/action-debian-package@v1
+      - run: chmod 755 homeassistant-supervised/DEBIAN/p*
+      - run: dpkg-deb --build --root-owner-group homeassistant-supervised
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
         with:
-          # Optional, relative to workspace directory
-          source_directory: homeassistant-supervised
-          # # Optional, value from `debian/changelog` is used if not defined
-          # os_distribution: bullseye
-          # # Optional, target architecture, defaults to amd64
-          # cpu_architecture: all
+          files: homeassistant-supervised.deb
