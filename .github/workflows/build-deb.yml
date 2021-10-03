@@ -3,7 +3,6 @@ name: Build Deb Package
 
 # yamllint disable-line rule:truthy
 on:
-  push:
   workflow_dispatch:
   release:
     types: ["published"]
