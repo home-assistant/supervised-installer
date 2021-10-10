@@ -12,7 +12,7 @@ This method is considered advanced and should only be used if one is an expert i
 
 ## Installation
 
-Run the following commands as root `sudo su -`
+Run the following commands as root (`su -` or `sudo su -` on machines with sudo installed):
 
 Step 1: Install Docker-CE with the following command:
 
