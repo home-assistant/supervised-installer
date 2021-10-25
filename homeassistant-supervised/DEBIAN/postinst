@@ -3,6 +3,7 @@ set -e
 function info { echo -e "\e[32m[info] $*\e[39m"; }
 function warn  { echo -e "\e[33m[warn] $*\e[39m"; }
 function error { echo -e "\e[31m[error] $*\e[39m"; exit 1; }
+. /usr/share/debconf/confmodule
 ARCH=$(uname -m)
 
 BINARY_DOCKER=/usr/bin/docker
@@ -44,19 +45,32 @@ case $ARCH in
     ;;
     "arm" |"armv6l")
         if [ -z $MACHINE ]; then
-            error "Please set machine for $ARCH"
+             db_input critical ha/machine-type | true
+             db_go || true
+             db_get ha/machine-type || true
+             MACHINE="$RET"
+             db_stop
         fi
         HASSIO_DOCKER="$DOCKER_REPO/armhf-hassio-supervisor"
     ;;
     "armv7l")
         if [ -z $MACHINE ]; then
-            error "Please set machine for $ARCH"
+             db_input critical ha/machine-type | true
+             db_go || true
+             db_get ha/machine-type || true
+             MACHINE="$RET"
+             db_stop
         fi
         HASSIO_DOCKER="$DOCKER_REPO/armv7-hassio-supervisor"
     ;;
     "aarch64")
         if [ -z $MACHINE ]; then
-            error "Please set machine for $ARCH"
+             db_input critical ha/machine-type | true
+             db_go || true
+             db_get ha/machine-type || true
+             MACHINE="$RET"
+             db_stop
+
         fi
         HASSIO_DOCKER="$DOCKER_REPO/aarch64-hassio-supervisor"
     ;;
