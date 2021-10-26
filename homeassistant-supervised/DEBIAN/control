@@ -1,0 +1,14 @@
+Package: homeassistant-supervised
+Section: base
+Version: 1.0.0
+Priority: optional
+Architecture: all
+Depends: curl, bash, docker-ce, dbus, network-manager, apparmor, jq, systemd, os-agent
+Maintainer: Matheson Steplock <https://mathesonsteplock.ca/>
+Homepage: https://www.home-assistant.io/
+Description: Home Assistant Supervised
+ This installation method provides the full Home Assistant experience on a regular operating system.
+ This means, all components from the Home Assistant method are used, except for the Home Assistant Operating System.
+ This system will run the Home Assistant Supervisor. The Supervisor is not just an application, it is a full appliance that manages the whole system.
+ It will clean up, repair or reset settings to default if they no longer match expected values.
+
