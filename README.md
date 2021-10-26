@@ -17,14 +17,7 @@ Run the following commands as root (`su -` or `sudo su -` on machines with sudo 
 Step 1: Install the following dependacy's with this command:
 
 ```bash
-apt-get install \
-jq \
-curl \
-avahi-daemon \
-udisks2 \
-libglib2.0-bin \
-network-manager \
-dbus -y
+apt-get install jq curl avahi-daemon udisks2 libglib2.0-bin network-manager dbus wget -y
 ```
 
 Step 2: Install Docker-CE with the following command:
