@@ -12,26 +12,36 @@ This method is considered advanced and should only be used if one is an expert i
 
 ## Installation
 
-Run as root (sudo su):
+Run the following commands as root (`su -` or `sudo su -` on machines with sudo installed):
+
+Step 1: Install the following dependacy's with this command:
 
 ```bash
-curl -Lo installer.sh https://raw.githubusercontent.com/home-assistant/supervised-installer/master/installer.sh
-bash installer.sh
+apt-get install \
+jq \
+curl \
+avahi-daemon \
+udisks2 \
+libglib2.0-bin \
+network-manager \
+dbus -y
 ```
 
-### Command line arguments
-| argument           | default                                                                                                                                                                             | description                                            |
-|--------------------|----------------------|--------------------------------------------------------|
-| -m \| --machine    |                      | On a special platform they need set a machine type use |
-| -d \| --data-share | $PREFIX/share/hassio | data folder for hass.io installation                   |
-| -p \| --prefix     | /usr                 | Binary prefix for hass.io installation                 |
-| -s \| --sysconfdir | /etc                 | Configuration directory for hass.io installation       |
-
-you can set these parameters by appending ` --<parameter> <value>` like:
+Step 2: Install Docker-CE with the following command:
 
 ```bash
-curl -Lo installer.sh https://raw.githubusercontent.com/home-assistant/supervised-installer/master/installer.sh
-bash installer.sh --machine MY_MACHINE
+curl -fsSL get.docker.com | sh
+```
+
+Step 3: Install the OS-Agent:
+
+Instructions for installing the OS-Agent can be found [here](https://github.com/home-assistant/os-agent/tree/main#using-home-assistant-supervised-on-debian)
+
+Step 4: Install the Home Assisistant Supervised Debian Package:
+
+```bash
+wget https://github.com/home-assistant/supervised-installer/releases/latest/download/homeassistant-supervised.deb
+dpkg -i homeassistant-supervised.deb
 ```
 
 ## Supported Machine types
