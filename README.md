@@ -19,6 +19,7 @@ Step 1: Install the following dependacy's with this command:
 ```bash
 apt-get install \
 jq \
+wget \
 curl \
 avahi-daemon \
 udisks2 \
