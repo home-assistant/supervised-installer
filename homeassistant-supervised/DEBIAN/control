@@ -1,6 +1,6 @@
 Package: homeassistant-supervised
 Section: base
-Version: 1.0.0
+Version: 1.0.1
 Priority: optional
 Architecture: all
 Depends: curl, bash, docker-ce, dbus, network-manager, apparmor, jq, systemd, os-agent

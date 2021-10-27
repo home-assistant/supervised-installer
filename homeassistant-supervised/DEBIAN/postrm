@@ -4,15 +4,25 @@ function info { echo -e "\e[32m[info] $*\e[39m"; }
 function warn  { echo -e "\e[33m[warn] $*\e[39m"; }
 function error { echo -e "\e[31m[error] $*\e[39m"; exit 1; }
 
+
 # Undo diversions
-dpkg-divert --package homeassistant-supervised --remove --rename \
+function undo_divert () {
+  dpkg-divert --package homeassistant-supervised --remove --rename \
     --divert /etc/NetworkManager/NetworkManager.conf.real /etc/NetworkManager/NetworkManager.conf
 
-dpkg-divert --package homeassistant-supervised --remove --rename \
+  dpkg-divert --package homeassistant-supervised --remove --rename \
     --divert /etc/NetworkManager/system-connections/default.real /etc/NetworkManager/system-connections/default
 
-dpkg-divert --package homeassistant-supervised --remove --rename \
+  dpkg-divert --package homeassistant-supervised --remove --rename \
     --divert /etc/docker/daemon.json.real /etc/docker/daemon.json
 
-dpkg-divert --package homeassistant-supervised --remove --rename \
+  dpkg-divert --package homeassistant-supervised --remove --rename \
     --divert /etc/network/interfaces.real /etc/network/interfaces
+}
+
+case "$1" in
+remove|abort-install|disappear)
+	  info Undo divert on "$@"
+          undo_divert
+        ;;
+esac
