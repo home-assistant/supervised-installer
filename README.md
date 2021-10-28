@@ -26,7 +26,7 @@ udisks2 \
 libglib2.0-bin \
 network-manager \
 dbus \
-avahi-daemon -y
+apparmor-utils -y
 ```
 
 Step 2: Install Docker-CE with the following command:
