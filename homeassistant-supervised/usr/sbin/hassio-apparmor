@@ -13,7 +13,7 @@ CACHE_DIR="${PROFILES_DIR}/cache"
 mkdir -p "${PROFILES_DIR}"
 mkdir -p "${CACHE_DIR}"
 
-# Load exists profiles
+# Load existing profiles
 for profile in "${PROFILES_DIR}"/*; do
     if [ ! -f "${profile}" ]; then
         continue
