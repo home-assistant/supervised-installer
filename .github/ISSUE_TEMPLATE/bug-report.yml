@@ -84,7 +84,7 @@ body:
     id: adr
     attributes:
       label: ADR
-      description: Before submitting this issue, you have read the [ADR]().
+      description: Before submitting this issue, you have read the [ADR](https://github.com/home-assistant/architecture/blob/master/adr/0014-home-assistant-supervised.md).
       options:
         - label: I have read through the ADR and have confirmed that my system is compliant with the requirements
           required: true
