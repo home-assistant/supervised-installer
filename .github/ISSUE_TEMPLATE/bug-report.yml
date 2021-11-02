@@ -1,5 +1,5 @@
 name: Bug Report
-description: File a bug report
+description: Do you think you have found a bug? If so then file a bug report
 title: "Bug Report: "
 labels: ["bug"]
 body:
