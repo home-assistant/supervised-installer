@@ -64,7 +64,7 @@ body:
   - type: textarea
     id: installer-output
     attributes:
-      label: Relevant log output
+      label: Installer output
       description: Please copy and paste any relevant output from the installer. This will be automatically formatted into code, so no need for backticks.
       render: text
   - type: textarea
@@ -74,20 +74,20 @@ body:
       description: Please copy and paste any relevant log output from `journalctl -f`. This will be automatically formatted into code, so no need for backticks.
       render: shell
   - type: checkboxes
-    id: terms
-    attributes:
-      label: Code of Conduct
-      description: By submitting this issue, you agree to follow our [Code of Conduct](https://www.home-assistant.io/code_of_conduct/).
-      options:
-        - label: I have read and agree to the Home Assistant Code of Conduct
-          required: true
-  - type: checkboxes
     id: adr
     attributes:
       label: ADR
       description: Before submitting this issue, you have read the [ADR](https://github.com/home-assistant/architecture/blob/master/adr/0014-home-assistant-supervised.md).
       options:
-        - label: I have read through the ADR and have confirmed that my system is compliant with the requirements
+        - label: I have read through the [ADR](https://github.com/home-assistant/architecture/blob/master/adr/0014-home-assistant-supervised.md) and have confirmed that my system is compliant with the requirements
           required: true
         - label: I understand that if my system is found to not be compliant, my issue will be closed immediately without further investigation
+          required: true
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Code of Conduct
+      description: By submitting this issue, you agree to follow our [Code of Conduct](https://www.home-assistant.io/code_of_conduct/).
+      options:
+        - label: I have read and agree to the [Home Assistant Code of Conduct](https://www.home-assistant.io/code_of_conduct/)
           required: true
