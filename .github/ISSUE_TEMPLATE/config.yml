@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Home Assistant Discord
+    url: https://www.home-assistant.io/join-chat/
+    about: Need help? Ask us in the `#homeassistant_supervised` Discord channel.
+  - name: Home Assistant Community Forums
+    url: https://community.home-assistant.io/
+    about: The community forums are another great place to get help and find installation guides maintained by the community.
