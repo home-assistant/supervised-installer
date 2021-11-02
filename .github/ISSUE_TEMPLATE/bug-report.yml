@@ -31,9 +31,7 @@ body:
       description: Please explain in detail, the issue you encountered and the steps to recreate it.
       placeholder: |
         I encountered an issue when trying to upgrade my existing installation to the Debian package.
-
         Steps to recreate:
-
         1. Run the now deprecated installation script
         2. Attempt to upgrade to version 1.0.0 of the Debian package with dpkg -i as root
         3. The install will fail with the error: `dpkg-divert: error: rename involves overwriting`
