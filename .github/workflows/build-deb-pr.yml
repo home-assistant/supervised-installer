@@ -17,4 +17,3 @@ jobs:
         with:
           name: homeassistant-supervised.deb
           path: homeassistant-supervised.deb
-          retention-days: 15
