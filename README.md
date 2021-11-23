@@ -14,7 +14,7 @@ This method is considered advanced and should only be used if one is an expert i
 
 Run the following commands as root (`su -` or `sudo su -` on machines with sudo installed):
 
-Step 1: Install the following dependacy's with this command:
+Step 1: Install the following dependencies with this command:
 
 ```bash
 apt-get install \
@@ -24,7 +24,8 @@ curl \
 udisks2 \
 libglib2.0-bin \
 network-manager \
-dbus -y
+dbus \
+apparmor -y
 ```
 
 Step 2: Install Docker-CE with the following command:
