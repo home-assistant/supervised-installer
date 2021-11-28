@@ -5,7 +5,7 @@ Priority: optional
 Architecture: all
 Depends: curl, bash, docker-ce, dbus, network-manager, apparmor, jq, systemd, os-agent
 Maintainer: Matheson Steplock <https://mathesonsteplock.ca/>
-Homepage: https://www.home-assistant.io/
+Homepage: https://github.com/home-assistant/supervised-installer/
 Description: Home Assistant Supervised
  This installation method provides the full Home Assistant experience on a regular operating system.
  This means, all components from the Home Assistant method are used, except for the Home Assistant Operating System.
