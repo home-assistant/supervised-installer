@@ -43,6 +43,7 @@ Step 4: Install the Home Assisistant Supervised Debian Package:
 wget https://github.com/home-assistant/supervised-installer/releases/latest/download/homeassistant-supervised.deb
 dpkg -i homeassistant-supervised.deb
 ```
+**Important:** Since the dpkg installer opens a UI to choose your machine type it cannot be run via ssh and must be executed on the host directly or via VNC.
 
 ## Supported Machine types
 
