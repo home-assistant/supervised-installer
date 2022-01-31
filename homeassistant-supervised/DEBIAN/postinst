@@ -127,3 +127,5 @@ systemctl start hassio-supervisor.service
 info "Installing the 'ha' cli"
 chmod a+x "${PREFIX}/bin/ha"
 
+info "Installation Complete!"
+info "Within a few minutes you will be able to reach Home Assistant on homeassistant.local:8123"
