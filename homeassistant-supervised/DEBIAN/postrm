@@ -20,7 +20,7 @@ function undo_divert () {
     --divert /etc/network/interfaces.real /etc/network/interfaces
 }
 
-function cleanup () {
+function reset_debconf_selections () {
   info "Resetting debconf selections"
   echo PURGE | debconf-communicate homeassistant-supervised >/dev/null
 }
@@ -29,6 +29,6 @@ case "$1" in
 remove|abort-install|disappear)
 	  info Undo divert on "$@"
           undo_divert
-          cleanup
+          reset_debconf_selections
         ;;
 esac
