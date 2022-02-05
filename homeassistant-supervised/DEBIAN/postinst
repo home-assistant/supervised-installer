@@ -128,4 +128,5 @@ info "Installing the 'ha' cli"
 chmod a+x "${PREFIX}/bin/ha"
 
 info "Installation Complete!"
-info "Within a few minutes you will be able to reach Home Assistant on homeassistant.local:8123"
+info "Within a few minutes you will be able to reach Home Assistant at:"
+info "homeassistant.local:8123 or your machine's ip address:8123"
