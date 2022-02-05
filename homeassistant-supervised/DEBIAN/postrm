@@ -30,5 +30,6 @@ remove|abort-install|disappear)
 	  info Undo divert on "$@"
           undo_divert
           reset_debconf_selections
+          info "Removal complete, you will need to manually the containers created by the supervisor"
         ;;
 esac
