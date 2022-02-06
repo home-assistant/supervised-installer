@@ -34,6 +34,10 @@ while ! ping -c 1 -W 1 ${URL_VERSION_HOST}; do
     sleep 2
 done
 
+# Get primary network interface
+PRIMARY_INTERFACE=$(ip route | awk '/^default/ { print $5 }')
+IP_ADDRESS=$(ip -4 addr show dev "$PRIMARY_INTERFACE" | awk '/inet / { sub("/.*", "", $2); print $2 }')
+
 case $ARCH in
     "i386" | "i686")
         MACHINE=${MACHINE:=qemux86}
@@ -130,4 +134,4 @@ chmod a+x "${PREFIX}/bin/ha"
 
 info "Within a few minutes you will be able to reach Home Assistant at:"
 info "http://homeassistant.local:8123 or using the IP address of your"
-info "machine: http://IP_ADDRESS:8123"
+info "machine: http://${IP_ADDRESS}:8123"
