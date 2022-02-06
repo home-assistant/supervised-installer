@@ -20,9 +20,17 @@ function undo_divert () {
     --divert /etc/network/interfaces.real /etc/network/interfaces
 }
 
+function reset_debconf_selections () {
+  info "Resetting debconf selections"
+  echo PURGE | debconf-communicate homeassistant-supervised >/dev/null
+}
+
 case "$1" in
 remove|abort-install|disappear)
 	  info Undo divert on "$@"
           undo_divert
+          reset_debconf_selections
+          info "Removal complete, due to the complexity of this installation method,"
+          info "you will need to manually the containers created by the supervisor"
         ;;
 esac
