@@ -41,7 +41,7 @@ IP_ADDRESS=$(ip -4 addr show dev "${PRIMARY_INTERFACE}" | awk '/inet / { sub("/.
 case ${ARCH} in
     "i386" | "i686")
         MACHINE=${MACHINE:=qemux86}
-        HASSIO_DOCKER="$DOCKER_REPO/i386-hassio-supervisor"
+        HASSIO_DOCKER="${DOCKER_REPO}/i386-hassio-supervisor"
     ;;
     "x86_64")
         MACHINE=${MACHINE:=qemux86-64}
@@ -55,7 +55,7 @@ case ${ARCH} in
              MACHINE="${RET}"
              db_stop
         fi
-        HASSIO_DOCKER="$DOCKER_REPO/armhf-hassio-supervisor"
+        HASSIO_DOCKER="${DOCKER_REPO}/armhf-hassio-supervisor"
     ;;
     "armv7l")
         if [ -z "${MACHINE}" ]; then
