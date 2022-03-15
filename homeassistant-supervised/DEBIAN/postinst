@@ -16,7 +16,7 @@ SERVICE_NM="NetworkManager.service"
 # Read infos from web
 URL_VERSION_HOST="version.home-assistant.io"
 URL_VERSION="https://version.home-assistant.io/stable.json"
-HASSIO_VERSION=$(curl -s $URL_VERSION | jq -e -r '.supervisor')
+HASSIO_VERSION=$(curl -s ${URL_VERSION} | jq -e -r '.supervisor')
 URL_APPARMOR_PROFILE="https://version.home-assistant.io/apparmor.txt"
 
 
@@ -26,7 +26,7 @@ systemctl restart "${SERVICE_NM}"
 
 # Restart Docker service
 info "Restarting docker service"
-systemctl restart "$SERVICE_DOCKER"
+systemctl restart "${SERVICE_DOCKER}"
 
 # Check network connection
 while ! ping -c 1 -W 1 ${URL_VERSION_HOST}; do
@@ -36,57 +36,57 @@ done
 
 # Get primary network interface
 PRIMARY_INTERFACE=$(ip route | awk '/^default/ { print $5 }')
-IP_ADDRESS=$(ip -4 addr show dev "$PRIMARY_INTERFACE" | awk '/inet / { sub("/.*", "", $2); print $2 }')
+IP_ADDRESS=$(ip -4 addr show dev "${PRIMARY_INTERFACE}" | awk '/inet / { sub("/.*", "", $2); print $2 }')
 
-case $ARCH in
+case ${ARCH} in
     "i386" | "i686")
         MACHINE=${MACHINE:=qemux86}
         HASSIO_DOCKER="$DOCKER_REPO/i386-hassio-supervisor"
     ;;
     "x86_64")
         MACHINE=${MACHINE:=qemux86-64}
-        HASSIO_DOCKER="$DOCKER_REPO/amd64-hassio-supervisor"
+        HASSIO_DOCKER="${DOCKER_REPO}/amd64-hassio-supervisor"
     ;;
     "arm" |"armv6l")
-        if [ -z $MACHINE ]; then
-             db_input critical ha/machine-type | true
+        if [ -z "${MACHINE}" ]; then
+             db_input critical ha/machine-type || true
              db_go || true
              db_get ha/machine-type || true
-             MACHINE="$RET"
+             MACHINE="${RET}"
              db_stop
         fi
         HASSIO_DOCKER="$DOCKER_REPO/armhf-hassio-supervisor"
     ;;
     "armv7l")
-        if [ -z $MACHINE ]; then
-             db_input critical ha/machine-type | true
+        if [ -z "${MACHINE}" ]; then
+             db_input critical ha/machine-type || true
              db_go || true
              db_get ha/machine-type || true
-             MACHINE="$RET"
+             MACHINE="${RET}"
              db_stop
         fi
-        HASSIO_DOCKER="$DOCKER_REPO/armv7-hassio-supervisor"
+        HASSIO_DOCKER="${DOCKER_REPO}/armv7-hassio-supervisor"
     ;;
     "aarch64")
-        if [ -z $MACHINE ]; then
-             db_input critical ha/machine-type | true
+        if [ -z "${MACHINE}" ]; then
+             db_input critical ha/machine-type || true
              db_go || true
              db_get ha/machine-type || true
-             MACHINE="$RET"
+             MACHINE="${RET}"
              db_stop
 
         fi
-        HASSIO_DOCKER="$DOCKER_REPO/aarch64-hassio-supervisor"
+        HASSIO_DOCKER="${DOCKER_REPO}/aarch64-hassio-supervisor"
     ;;
     *)
-        error "$ARCH unknown!"
+        error "${ARCH} unknown!"
     ;;
 esac
 PREFIX=${PREFIX:-/usr}
 SYSCONFDIR=${SYSCONFDIR:-/etc}
 DATA_SHARE=${DATA_SHARE:-$PREFIX/share/hassio}
-CONFIG=$SYSCONFDIR/hassio.json
-cat > "$CONFIG" <<- EOF
+CONFIG="${SYSCONFDIR}/hassio.json"
+cat > "${CONFIG}" <<- EOF
 {
     "supervisor": "${HASSIO_DOCKER}",
     "machine": "${MACHINE}",
@@ -96,8 +96,8 @@ EOF
 
 # Pull Supervisor image
 info "Install supervisor Docker container"
-docker pull "$HASSIO_DOCKER:$HASSIO_VERSION" > /dev/null
-docker tag "$HASSIO_DOCKER:$HASSIO_VERSION" "$HASSIO_DOCKER:latest" > /dev/null
+docker pull "${HASSIO_DOCKER}:${HASSIO_VERSION}" > /dev/null
+docker tag "${HASSIO_DOCKER}:${HASSIO_VERSION}" "${HASSIO_DOCKER}:latest" > /dev/null
 
 # Install Supervisor
 info "Install supervisor startup scripts"
