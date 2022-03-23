@@ -143,6 +143,7 @@ fi
 info "Within a few minutes you will be able to reach Home Assistant at:"
 info "http://homeassistant.local:8123 or using the IP address of your"
 info "machine: http://${IP_ADDRESS}:8123"
-if -f /var/run/reboot-required; then
+if [ -f /var/run/reboot-required ]
+then
     warn "A reboot is required to apply changes to grub."
 fi
