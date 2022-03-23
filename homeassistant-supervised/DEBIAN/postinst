@@ -126,6 +126,12 @@ systemctl start hassio-apparmor.service
 info "Start Home Assistant Supervised"
 systemctl start hassio-supervisor.service
 
+# Enable and start systemd-resolved
+if [ "$(systemctl is-active systemd-resolved)" = 'inactive' ]; then
+    info "Enable systemd-resolved"
+    systemctl enable systemd-resolved.service> /dev/null 2>&1;
+    systemctl start systemd-resolved.service> /dev/null 2>&1;
+fi
 
 # Install HA CLI
 info "Installing the 'ha' cli"
