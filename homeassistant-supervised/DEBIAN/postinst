@@ -24,6 +24,13 @@ URL_APPARMOR_PROFILE="https://version.home-assistant.io/apparmor.txt"
 info "Restarting NetworkManager"
 systemctl restart "${SERVICE_NM}"
 
+# Enable and start systemd-resolved
+if [ "$(systemctl is-active systemd-resolved)" = 'inactive' ]; then
+    info "Enable systemd-resolved"
+    systemctl enable systemd-resolved.service> /dev/null 2>&1;
+    systemctl start systemd-resolved.service> /dev/null 2>&1;
+fi
+
 # Restart Docker service
 info "Restarting docker service"
 systemctl restart "$SERVICE_DOCKER"
@@ -125,7 +132,6 @@ systemctl start hassio-apparmor.service
 # Start Supervisor 
 info "Start Home Assistant Supervised"
 systemctl start hassio-supervisor.service
-
 
 # Install HA CLI
 info "Installing the 'ha' cli"
