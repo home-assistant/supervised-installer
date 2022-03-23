@@ -133,7 +133,7 @@ chmod a+x "${PREFIX}/bin/ha"
 
 # Switch to cgroup v1
 if ! grep -q "systemd.unified_cgroup_hierarchy=false" /etc/default/grub; then
-    info "Enable cgroup v1"
+    info "Switching to cgroup v1"
     cp /etc/default/grub /etc/default/grub.bak
     sed -i 's/^GRUB_CMDLINE_LINUX_DEFAULT="/&systemd.unified_cgroup_hierarchy=false /' /etc/default/grub
     update-grub
