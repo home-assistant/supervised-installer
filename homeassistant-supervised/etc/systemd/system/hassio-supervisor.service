@@ -1,7 +1,12 @@
 [Unit]
 Description=Hass.io supervisor
-Requires=%%SERVICE_DOCKER%%
-After=%%SERVICE_DOCKER%% dbus.socket
+Requires=docker.service dbus.service
+Wants=network-online.target hassio-apparmor.service time-sync.target
+After=docker.service dbus.service network-online.target hassio-apparmor.service time-sync.target
+StartLimitIntervalSec=60
+StartLimitBurst=5
+ConditionPathExists=/run/dbus/system_bus_socket
+ConditionPathExists=/run/docker.sock
 
 [Service]
 Type=simple
