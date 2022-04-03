@@ -152,7 +152,7 @@ then
     if ! grep -q "systemd.unified_cgroup_hierarchy=false" /boot/cmdline.txt; then
         info "Switching to cgroup v1"
         cp /boot/cmdline.txt /boot/cmdline.txt.bak
-        sed -i 's/$/systemd.unified_cgroup_hierarchy=false/' /boot/cmdline.txt
+        sed -i 's/$/ systemd.unified_cgroup_hierarchy=false/' /boot/cmdline.txt
         touch /var/run/reboot-required
     fi
 else
