@@ -42,7 +42,7 @@ while ! ping -c 1 -W 1 ${URL_VERSION_HOST}; do
 done
 
 # Get primary network interface
-PRIMARY_INTERFACE=$(ip route | awk '/^default/ { print $5 }')
+PRIMARY_INTERFACE=$(ip route | awk '/^default/ { print $5; exit }')
 IP_ADDRESS=$(ip -4 addr show dev "${PRIMARY_INTERFACE}" | awk '/inet / { sub("/.*", "", $2); print $2 }')
 
 case ${ARCH} in
