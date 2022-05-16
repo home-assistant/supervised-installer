@@ -134,14 +134,26 @@ info "Installing the 'ha' cli"
 chmod a+x "${PREFIX}/bin/ha"
 
 # Switch to cgroup v1
-if ! grep -q "systemd.unified_cgroup_hierarchy=false" /etc/default/grub; then
-    info "Switching to cgroup v1"
-    cp /etc/default/grub /etc/default/grub.bak
-    sed -i 's/^GRUB_CMDLINE_LINUX_DEFAULT="/&systemd.unified_cgroup_hierarchy=false /' /etc/default/grub
-    update-grub
-    touch /var/run/reboot-required
+if [ -f /etc/default/grub ]
+then
+    if ! grep -q "systemd.unified_cgroup_hierarchy=false" /etc/default/grub; then
+        info "Switching to cgroup v1"
+        cp /etc/default/grub /etc/default/grub.bak
+        sed -i 's/^GRUB_CMDLINE_LINUX_DEFAULT="/&systemd.unified_cgroup_hierarchy=false /' /etc/default/grub
+        update-grub
+        touch /var/run/reboot-required
+    fi
+elif [ -f /boot/cmdline.txt ]
+then
+    if ! grep -q "systemd.unified_cgroup_hierarchy=false" /boot/cmdline.txt; then
+        info "Switching to cgroup v1"
+        cp /boot/cmdline.txt /boot/cmdline.txt.bak
+        sed -i 's/$/ systemd.unified_cgroup_hierarchy=false/' /boot/cmdline.txt
+        touch /var/run/reboot-required
+    fi
+else
+    warn "Could not find /etc/default/grub or /boot/cmdline.txt failed to switch to cgroup v1"
 fi
-
 info "Within a few minutes you will be able to reach Home Assistant at:"
 info "http://homeassistant.local:8123 or using the IP address of your"
 info "machine: http://${IP_ADDRESS}:8123"
