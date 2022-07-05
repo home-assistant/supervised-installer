@@ -13,7 +13,7 @@ jobs:
       - run: chmod 555 homeassistant-supervised/DEBIAN/p*
       - run: dpkg-deb --build --root-owner-group homeassistant-supervised
       - name: Upload
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: homeassistant-supervised.deb
           path: homeassistant-supervised.deb
