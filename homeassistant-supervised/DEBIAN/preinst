@@ -27,9 +27,6 @@ dpkg-divert --package homeassistant-supervised --add --rename \
     --divert /etc/NetworkManager/NetworkManager.conf.real /etc/NetworkManager/NetworkManager.conf
 
 dpkg-divert --package homeassistant-supervised --add --rename \
-    --divert /etc/NetworkManager/system-connections/default.real /etc/NetworkManager/system-connections/default
-
-dpkg-divert --package homeassistant-supervised --add --rename \
     --divert /etc/docker/daemon.json.real /etc/docker/daemon.json
 
 dpkg-divert --package homeassistant-supervised --add --rename \
