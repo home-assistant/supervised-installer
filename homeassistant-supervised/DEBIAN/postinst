@@ -14,7 +14,7 @@ SERVICE_DOCKER="docker.service"
 SERVICE_NM="NetworkManager.service"
 
 # Read infos from web
-URL_VERSION_HOST="version.home-assistant.io"
+URL_CHECK_ONLINE="http://checkonline.home-assistant.io"
 URL_VERSION="https://version.home-assistant.io/stable.json"
 HASSIO_VERSION=$(curl -s ${URL_VERSION} | jq -e -r '.supervisor')
 URL_APPARMOR_PROFILE="https://version.home-assistant.io/apparmor.txt"
@@ -36,8 +36,8 @@ info "Restarting docker service"
 systemctl restart "${SERVICE_DOCKER}"
 
 # Check network connection
-while ! ping -c 1 -W 1 ${URL_VERSION_HOST}; do
-    info "Waiting for ${URL_VERSION_HOST} - network interface might be down..."
+while ! ping -c 1 -W 1 ${URL_CHECK_ONLINE}; do
+    info "Waiting for ${URL_CHECK_ONLINE} - network interface might be down..."
     sleep 2
 done
 
