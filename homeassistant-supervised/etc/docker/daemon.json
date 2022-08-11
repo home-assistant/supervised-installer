@@ -1,4 +1,6 @@
 {
     "log-driver": "journald",
-    "storage-driver": "overlay2"
+    "storage-driver": "overlay2",
+    "ip6tables": true,
+    "experimental": true
 }
