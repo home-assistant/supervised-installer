@@ -37,7 +37,15 @@ Step 3: Install the OS-Agent:
 
 Instructions for installing the OS-Agent can be found [here](https://github.com/home-assistant/os-agent/tree/main#using-home-assistant-supervised-on-debian)
 
-Step 4: Install the Home Assistant Supervised Debian Package:
+Step 4: Install and activate apparmor (needed on raspbian)
+### Install
+```bash
+sudo apt-get install apparmor
+```
+### Activate
+Add `apparmor=1 security=apparmor` to `/boot/cmdline.txt`
+
+Step 5: Install the Home Assistant Supervised Debian Package:
 
 ```bash
 wget https://github.com/home-assistant/supervised-installer/releases/latest/download/homeassistant-supervised.deb
