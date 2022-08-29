@@ -14,7 +14,7 @@ This method is considered advanced and should only be used if one is an expert i
 
 Run the following commands as root (`su -` or `sudo su -` on machines with sudo installed):
 
-Step 1: Install the following dependacy's with this command:
+Step 1: Install the following dependencies with this command:
 
 ```bash
 apt-get install \
@@ -65,4 +65,4 @@ dpkg -i homeassistant-supervised.deb
 
 ## Troubleshooting
 
-If somethings going wrong, use `journalctl -f` to get your system logs. If you are not familiar with Linux and how you can fix issues, we recommend to use our Home Assistant OS.
+If something's going wrong, use `journalctl -f` to get your system logs. If you are not familiar with Linux and how you can fix issues, we recommend to use our Home Assistant OS.
