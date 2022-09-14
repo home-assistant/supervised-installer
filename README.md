@@ -24,7 +24,8 @@ curl \
 udisks2 \
 libglib2.0-bin \
 network-manager \
-dbus -y
+dbus \
+systemd-journal-remote -y
 ```
 
 Step 2: Install Docker-CE with the following command:
