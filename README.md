@@ -18,6 +18,7 @@ Step 1: Install the following dependencies with this command:
 
 ```bash
 apt-get install \
+apparmor \
 jq \
 wget \
 curl \
