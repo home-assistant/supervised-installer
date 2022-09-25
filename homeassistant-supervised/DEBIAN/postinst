@@ -132,7 +132,7 @@ chmod a+x "${PREFIX}/sbin/hassio-apparmor"
 systemctl enable hassio-apparmor.service > /dev/null 2>&1;
 systemctl start hassio-apparmor.service
 
-# Start Supervisor 
+# Start Supervisor
 info "Start Home Assistant Supervised"
 systemctl start hassio-supervisor.service
 
@@ -150,16 +150,15 @@ then
         update-grub
         touch /var/run/reboot-required
     fi
-elif [ -f /boot/cmdline.txt ]
+elif [ -f /boot/firmware/cmdline.txt ]
 then
-    if ! grep -q "systemd.unified_cgroup_hierarchy=false" /boot/cmdline.txt; then
+    if ! grep -q "systemd.unified_cgroup_hierarchy=false" /boot/firmware/cmdline.txt; then
         info "Switching to cgroup v1"
-        cp /boot/cmdline.txt /boot/cmdline.txt.bak
-        sed -i 's/$/ systemd.unified_cgroup_hierarchy=false/' /boot/cmdline.txt
+        sed -i.bak 's/$/ systemd.unified_cgroup_hierarchy=false/' /boot/firmware/cmdline.txt
         touch /var/run/reboot-required
     fi
 else
-    warn "Could not find /etc/default/grub or /boot/cmdline.txt failed to switch to cgroup v1"
+    warn "Could not find /etc/default/grub or /boot/firmware/cmdline.txt failed to switch to cgroup v1"
 fi
 info "Within a few minutes you will be able to reach Home Assistant at:"
 info "http://homeassistant.local:8123 or using the IP address of your"
