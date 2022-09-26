@@ -22,6 +22,11 @@ if [[ "$(sysctl --values kernel.dmesg_restrict)" != "0" ]]; then
     echo "kernel.dmesg_restrict=0" >> /etc/sysctl.conf
 fi
 
+ARCH=$(uname -m)
+if [[ ! "i386|i686|x86_64|arm|armv6l|armv7l|aarch64" == *"$ARCH"* ]]; then
+    error "${ARCH} is not supported!"
+fi
+
 
 dpkg-divert --package homeassistant-supervised --add --rename \
     --divert /etc/NetworkManager/NetworkManager.conf.real /etc/NetworkManager/NetworkManager.conf
