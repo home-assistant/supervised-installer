@@ -46,6 +46,7 @@ body:
         - generic-x86-64
         - khadas-vim3
         - odroid-c2
+        - odroid-c4
         - odroid-n2
         - odroid-xu
         - qemuarm
