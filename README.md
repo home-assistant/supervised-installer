@@ -50,6 +50,7 @@ dpkg -i homeassistant-supervised.deb
 
 - generic-x86-64
 - odroid-c2
+- odroid-c4
 - odroid-n2
 - odroid-xu
 - qemuarm
