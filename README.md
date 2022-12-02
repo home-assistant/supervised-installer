@@ -46,6 +46,8 @@ wget https://github.com/home-assistant/supervised-installer/releases/latest/down
 dpkg -i homeassistant-supervised.deb
 ```
 
+On a Raspberry PI additionally add `systemd.unified_cgroup_hierarchy=false` to the file `/boot/cmdline.txt` that the CGroup Version 1 is used.
+
 ## Supported Machine types
 
 - generic-x86-64
