@@ -13,7 +13,7 @@ warn ""
 # Check if we are running on a supported OS
 CURRENT_OS=$(lsb_release -d)
 if [[ $CURRENT_OS != *"Debian GNU/Linux 11 (bullseye)"* ]]; then
-    error "Unsupported OS: $CURRENT_OS"
+    error "${CURRENT_OS} is not supported!"
 fi
 
 # Check if we are running on a supported architecture
