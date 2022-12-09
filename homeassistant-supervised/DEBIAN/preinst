@@ -11,9 +11,17 @@ warn "via a Docker container."
 warn ""
 
 # Check if we are running on a supported OS
+BYPASS_OS_CHECK=${BYPASS_OS_CHECK:-false}
 CURRENT_OS=$(lsb_release -d)
 if [[ $CURRENT_OS != *"Debian GNU/Linux 11 (bullseye)"* ]]; then
-    error "${CURRENT_OS} is not supported!"
+# Strip first feild of string
+    CURRENT_OS=$(echo $CURRENT_OS | cut -d' ' -f2-)
+    if [[ $BYPASS_OS_CHECK != "true" ]]; then
+        error "${CURRENT_OS} is not supported!"
+    fi
+    warn "Bypassing OS check..."
+    warn "${CURRENT_OS} is not supported!"
+    warn "Please DO NOT report issues regarding this OS!"
 fi
 
 # Check if we are running on a supported architecture
