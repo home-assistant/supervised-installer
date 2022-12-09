@@ -66,6 +66,17 @@ dpkg -i homeassistant-supervised.deb
 - tinker
 - khadas-vim3
 
+## Configuration
+
+The default path for our `$DATA_SHARE` is `/usr/share/hassio`.
+This path is used to store all home assistant related things.
+
+You can reconfigure this path during installation with
+
+```bash
+DATA_SHARE=/my/own/homeassistant dpkg --force-confdef --force-confold -i /srv/setup/homeassistant-supervised.deb
+```
+
 ## Troubleshooting
 
 If something's going wrong, use `journalctl -f` to get your system logs. If you are not familiar with Linux and how you can fix issues, we recommend to use our Home Assistant OS.
