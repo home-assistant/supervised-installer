@@ -74,7 +74,7 @@ This path is used to store all home assistant related things.
 You can reconfigure this path during installation with
 
 ```bash
-DATA_SHARE=/my/own/homeassistant dpkg --force-confdef --force-confold -i /srv/setup/homeassistant-supervised.deb
+DATA_SHARE=/my/own/homeassistant dpkg --force-confdef --force-confold -i homeassistant-supervised.deb
 ```
 
 ## Troubleshooting
