@@ -10,6 +10,26 @@ warn "Home Assistant as a VM or run Home Assistant Core"
 warn "via a Docker container."
 warn ""
 
+# Check if we are running on a supported OS
+BYPASS_OS_CHECK=${BYPASS_OS_CHECK:-false}
+CURRENT_OS=$(lsb_release -d)
+if [[ $CURRENT_OS != *"Debian GNU/Linux 11 (bullseye)"* ]]; then
+# Strip first feild of string
+    CURRENT_OS=$(echo $CURRENT_OS | cut -d' ' -f2-)
+    if [[ $BYPASS_OS_CHECK != "true" ]]; then
+        error "${CURRENT_OS} is not supported!"
+    fi
+    warn "Bypassing OS check..."
+    warn "${CURRENT_OS} is not supported!"
+    warn "Please DO NOT report issues regarding this OS!"
+fi
+
+# Check if we are running on a supported architecture
+ARCH=$(uname -m)
+if [[ ! "i386|i686|x86_64|arm|armv6l|armv7l|aarch64" == *"$ARCH"* ]]; then
+    error "${ARCH} is not supported!"
+fi
+
 # Check if Modem Manager is enabled
 if systemctl is-enabled ModemManager.service &> /dev/null; then
     warn "ModemManager service is enabled. This might cause issue when using serial devices."
@@ -22,10 +42,6 @@ if [[ "$(sysctl --values kernel.dmesg_restrict)" != "0" ]]; then
     echo "kernel.dmesg_restrict=0" >> /etc/sysctl.conf
 fi
 
-ARCH=$(uname -m)
-if [[ ! "i386|i686|x86_64|arm|armv6l|armv7l|aarch64" == *"$ARCH"* ]]; then
-    error "${ARCH} is not supported!"
-fi
 
 
 dpkg-divert --package homeassistant-supervised --add --rename \
