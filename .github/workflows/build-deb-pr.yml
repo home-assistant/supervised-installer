@@ -10,8 +10,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - run: chmod 555 homeassistant-supervised/DEBIAN/p*
-      - run: dpkg-deb --build --root-owner-group homeassistant-supervised
+      - name: Build Debian Package in Docker
+        run: |
+          docker run --rm -v $(pwd):/tmp debian:bullseye-slim bash -c \
+          "cd /tmp \
+          && chmod 555 homeassistant-supervised/DEBIAN/p* \
+          && dpkg-deb --build --root-owner-group homeassistant-supervised"
       - name: Upload
         uses: actions/upload-artifact@v3
         with:
