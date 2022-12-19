@@ -26,6 +26,7 @@ udisks2 \
 libglib2.0-bin \
 network-manager \
 dbus \
+lsb-release \
 systemd-journal-remote -y
 ```
 
