@@ -17,7 +17,7 @@ Run the following commands as root (`su -` or `sudo su -` on machines with sudo 
 Step 1: Install the following dependencies with this command:
 
 ```bash
-apt-get install \
+apt install \
 apparmor \
 jq \
 wget \
@@ -44,7 +44,7 @@ Step 4: Install the Home Assistant Supervised Debian Package:
 
 ```bash
 wget https://github.com/home-assistant/supervised-installer/releases/latest/download/homeassistant-supervised.deb
-dpkg -i homeassistant-supervised.deb
+apt install ./homeassistant-supervised.deb
 ```
 
 ## Supported Machine types
