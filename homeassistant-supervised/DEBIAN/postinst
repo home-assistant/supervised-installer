@@ -166,6 +166,14 @@ then
         sed -i.bak 's/$/ systemd.unified_cgroup_hierarchy=false/' /boot/firmware/cmdline.txt
         touch /var/run/reboot-required
     fi
+elif [ -f /boot/uEnv.txt ]
+then
+    if ! grep -q "systemd.unified_cgroup_hierarchy=false" /boot/uEnv.txt; then
+        info "Switching to cgroup v1 and enable apparmor"
+        cp /boot/uEnv.txt /boot/uEnv.txt.bak
+        sed -i 's/^APPEND="/&systemd.unified_cgroup_hierarchy=false apparmor=1 security=apparmor /' /boot/uEnv.txt
+        touch /var/run/reboot-required
+    fi	
 else
     warn "Could not find /etc/default/grub or /boot/firmware/cmdline.txt failed to switch to cgroup v1"
 fi
