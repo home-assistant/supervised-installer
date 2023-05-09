@@ -44,7 +44,7 @@ Step 4: Install the Home Assistant Supervised Debian Package:
 
 ```bash
 wget https://github.com/home-assistant/supervised-installer/releases/latest/download/homeassistant-supervised.deb
-apt install ./homeassistant-supervised.deb
+dpkg -i ./homeassistant-supervised.deb
 ```
 
 ## Supported Machine types
