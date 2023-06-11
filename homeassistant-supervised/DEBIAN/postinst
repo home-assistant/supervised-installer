@@ -106,8 +106,13 @@ case ${ARCH} in
 esac
 PREFIX=${PREFIX:-/usr}
 SYSCONFDIR=${SYSCONFDIR:-/etc}
-DATA_SHARE=${DATA_SHARE:-$PREFIX/share/hassio}
 CONFIG="${SYSCONFDIR}/hassio.json"
+
+if [ -z "$DATA_SHARE" ] && [ -e "$CONFIG" ]; then
+    DATA_SHARE=$(jq -e -r '.data' "${CONFIG}" || true)
+fi
+
+DATA_SHARE=${DATA_SHARE:-$PREFIX/share/hassio}
 cat > "${CONFIG}" <<- EOF
 {
     "supervisor": "${HASSIO_DOCKER}",
