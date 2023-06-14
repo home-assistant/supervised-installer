@@ -12,10 +12,19 @@ warn ""
 
 # Check if we are running on a supported OS
 BYPASS_OS_CHECK=${BYPASS_OS_CHECK:-false}
-CURRENT_OS=$(lsb_release -d)
-if [[ $CURRENT_OS != *"Debian GNU/Linux 11 (bullseye)"* ]]; then
-# Strip first feild of string
-    CURRENT_OS=$(echo $CURRENT_OS | cut -d' ' -f2-)
+supported_os=("Debian GNU/Linux 11 (bullseye)" "Debian GNU/Linux 12 (bookworm)")
+
+CURRENT_OS=$(lsb_release -d | awk -F"\t" '{print $2}')
+os_supported=false
+
+for os in "${supported_os[@]}"; do
+    if [[ $os == "$CURRENT_OS" ]]; then
+        os_supported=true
+        break
+    fi
+done
+
+if [[ $os_supported == false ]]; then
     if [[ $BYPASS_OS_CHECK != "true" ]]; then
         error "${CURRENT_OS} is not supported!"
     fi

@@ -27,7 +27,8 @@ libglib2.0-bin \
 network-manager \
 dbus \
 lsb-release \
-systemd-journal-remote -y
+systemd-journal-remote \
+systemd-resolved -y
 ```
 
 Step 2: Install Docker-CE with the following command:
