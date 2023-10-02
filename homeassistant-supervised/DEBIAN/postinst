@@ -45,10 +45,9 @@ if [ "$(systemctl is-active systemd-journal-gatewayd.socket)" = 'inactive' ]; th
     systemctl enable systemd-journal-gatewayd.socket> /dev/null 2>&1;
     systemctl start systemd-journal-gatewayd.socket> /dev/null 2>&1;
 fi
-# Enable and start nfs-utils.service for nfs mounts
+# Start nfs-utils.service for nfs mounts
 if [ "$(systemctl is-active nfs-utils.service)" = 'inactive' ]; then
-    info "Enable nfs-utils.service"
-    systemctl enable nfs-utils.service> /dev/null 2>&1;
+    info "Start nfs-utils.service"
     systemctl start nfs-utils.service> /dev/null
 fi
 
