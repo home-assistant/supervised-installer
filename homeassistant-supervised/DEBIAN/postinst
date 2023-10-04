@@ -48,7 +48,7 @@ fi
 # Start nfs-utils.service for nfs mounts
 if [ "$(systemctl is-active nfs-utils.service)" = 'inactive' ]; then
     info "Start nfs-utils.service"
-    systemctl start nfs-utils.service> /dev/null
+    systemctl start nfs-utils.service
 fi
 
 # Restart Docker service
