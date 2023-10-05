@@ -28,14 +28,14 @@ systemctl restart "${SERVICE_NM}"
 if [ "$(systemctl is-active systemd-resolved)" = 'inactive' ]; then
     info "Enable systemd-resolved"
     systemctl enable systemd-resolved.service> /dev/null 2>&1;
-    systemctl start systemd-resolved.service> /dev/null 2>&1;
+    systemctl start systemd-resolved.service
 fi
 
 # Check and fix systemd-journal-gatewayd socket location
 if [ ! -S "/run/systemd-journal-gatewayd.sock" ]; then
     info "Set up systemd-journal-gatewayd socket file"
     if [ "$(systemctl is-active systemd-journal-gatewayd.socket)" = 'active' ]; then
-        systemctl stop systemd-journal-gatewayd.socket> /dev/null 2>&1;
+        systemctl stop systemd-journal-gatewayd.socket
     fi
     rm -rf "/run/systemd-journal-gatewayd.sock";
 fi
@@ -43,7 +43,7 @@ fi
 if [ "$(systemctl is-active systemd-journal-gatewayd.socket)" = 'inactive' ]; then
     info "Enable systemd-journal-gatewayd"
     systemctl enable systemd-journal-gatewayd.socket> /dev/null 2>&1;
-    systemctl start systemd-journal-gatewayd.socket> /dev/null 2>&1;
+    systemctl start systemd-journal-gatewayd.socket
 fi
 
 # Restart Docker service
