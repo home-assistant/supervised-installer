@@ -24,6 +24,10 @@ URL_APPARMOR_PROFILE="https://version.home-assistant.io/apparmor.txt"
 info "Restarting NetworkManager"
 systemctl restart "${SERVICE_NM}"
 
+# Set permissions of /etc/systemd/resolved.conf
+info "Setting permissions of /etc/systemd/resolved.conf"
+chmod 644 /etc/systemd/resolved.conf
+
 # Enable and restart systemd-resolved
 info "Enable systemd-resolved"
 systemctl enable systemd-resolved.service> /dev/null 2>&1;
