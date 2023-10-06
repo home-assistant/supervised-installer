@@ -25,8 +25,11 @@ info "Restarting NetworkManager"
 systemctl restart "${SERVICE_NM}"
 
 # Set permissions of /etc/systemd/resolved.conf
-info "Setting permissions of /etc/systemd/resolved.conf"
-chmod 644 /etc/systemd/resolved.conf
+# check if file has correct permissions
+if [ "$(stat -c %a /etc/systemd/resolved.conf)" != "644" ]; then
+    info "Setting permissions of /etc/systemd/resolved.conf"
+    chmod 644 /etc/systemd/resolved.conf
+fi
 
 # Enable and restart systemd-resolved
 info "Enable systemd-resolved"
