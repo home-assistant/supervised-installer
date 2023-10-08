@@ -1,0 +1,17 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build Debian Package",
+            "type": "shell",
+            "command": "chmod 555 homeassistant-supervised/DEBIAN/p* && dpkg-deb --build --root-owner-group homeassistant-supervised",
+            "problemMatcher": [],
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            }
+        }
+    ]
+}
