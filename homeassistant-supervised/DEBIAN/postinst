@@ -18,6 +18,7 @@ URL_CHECK_ONLINE="checkonline.home-assistant.io"
 URL_VERSION="https://version.home-assistant.io/stable.json"
 HASSIO_VERSION=$(curl -s ${URL_VERSION} | jq -e -r '.supervisor')
 URL_APPARMOR_PROFILE="https://version.home-assistant.io/apparmor.txt"
+HA_OS_AGENT_LAST_VERSION=$(curl --silent "https://api.github.com/repos/home-assistant/os-agent/releases/latest" | grep -Po '"tag_name": "\K.*?(?=")')
 
 
 # Restart NetworkManager
@@ -116,6 +117,19 @@ cat > "${CONFIG}" <<- EOF
 }
 EOF
 
+# Install OS-Agent
+info "Install last os-agent scripts"
+if [ $ARCH == "armv6l" ]
+then
+    ADAPTEDARCH="armv6"
+elif [ $ARCH == "armv7l" ]
+then
+    ADAPTEDARCH="armv7"
+else
+    info "This $ARCH system do not need adaptation name"
+fi
+wget "https://github.com/home-assistant/os-agent/releases/download/"$HA_OS_AGENT_LAST_VERSION"/os-agent_"$HA_OS_AGENT_LAST_VERSION"_linux_"${ARCH}".deb" || warn "FAIL DOWNLOAD OSAgent $HA_OS_AGENT_LAST_VERSION !"
+dpkg -i os-agent_"$HA_OS_AGENT_LAST_VERSION"_linux_"${ARCH}${ADAPTEDARCH}".deb || warn "OSAgent NOT FOUND !"
 
 # Install Supervisor
 info "Install supervisor startup scripts"
@@ -140,6 +154,24 @@ sed -i -e "s,%%SERVICE_DOCKER%%,${SERVICE_DOCKER},g" \
 chmod a+x "${PREFIX}/sbin/hassio-apparmor"
 systemctl enable hassio-apparmor.service > /dev/null 2>&1;
 systemctl start hassio-apparmor.service
+
+# Add apparmor security on grub
+if [ -f /etc/default/grub ]
+then
+    if ! grep -q "apparmor=1 security=apparmor" /etc/default/grub; then
+        info "Adding apparmor security on grub"
+        cp /etc/default/grub /etc/default/grub.bak
+        sed -i 's/^GRUB_CMDLINE_LINUX_DEFAULT="/&apparmor=1 security=apparmor /' /etc/default/grub
+    fi
+elif [ -f /boot/firmware/cmdline.txt ]
+then
+    if ! grep -q "apparmor=1 security=apparmor" /boot/firmware/cmdline.txt; then
+        info "Adding apparmor security on grub"
+        sed -i.bak 's/$/ apparmor=1 security=apparmor/' /boot/firmware/cmdline.txt
+    fi
+else
+    warn "Could not find /etc/default/grub or /boot/firmware/cmdline.txt failed to add apparmor security on grub"
+fi
 
 # Start Supervisor
 info "Start Home Assistant Supervised"
