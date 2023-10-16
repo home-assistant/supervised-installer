@@ -64,3 +64,6 @@ dpkg-divert --package homeassistant-supervised --add --rename \
 
 dpkg-divert --package homeassistant-supervised --add --rename \
     --divert /etc/network/interfaces.real /etc/network/interfaces
+
+dpkg-divert --package homeassistant-supervised --add --rename \
+    --divert /etc/systemd/resolved.conf.real /etc/systemd/resolved.conf

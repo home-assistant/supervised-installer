@@ -24,12 +24,18 @@ URL_APPARMOR_PROFILE="https://version.home-assistant.io/apparmor.txt"
 info "Restarting NetworkManager"
 systemctl restart "${SERVICE_NM}"
 
-# Enable and start systemd-resolved
-if [ "$(systemctl is-active systemd-resolved)" = 'inactive' ]; then
-    info "Enable systemd-resolved"
-    systemctl enable systemd-resolved.service> /dev/null 2>&1;
-    systemctl start systemd-resolved.service
+# Set permissions of /etc/systemd/resolved.conf
+# check if file has correct permissions
+if [ "$(stat -c %a /etc/systemd/resolved.conf)" != "644" ]; then
+    info "Setting permissions of /etc/systemd/resolved.conf"
+    chmod 644 /etc/systemd/resolved.conf
 fi
+
+# Enable and restart systemd-resolved
+info "Enable systemd-resolved"
+systemctl enable systemd-resolved.service> /dev/null 2>&1;
+info "Restarting systemd-resolved"
+systemctl restart systemd-resolved.service
 
 # Check and fix systemd-journal-gatewayd socket location
 if [ ! -S "/run/systemd-journal-gatewayd.sock" ]; then

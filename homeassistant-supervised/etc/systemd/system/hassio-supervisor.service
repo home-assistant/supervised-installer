@@ -1,8 +1,8 @@
 [Unit]
 Description=Hass.io supervisor
 Requires=docker.service dbus.service
-Wants=network-online.target hassio-apparmor.service time-sync.target systemd-journal-gatewayd.socket
-After=docker.service dbus.service network-online.target hassio-apparmor.service time-sync.target systemd-journal-gatewayd.socket
+Wants=network-online.target hassio-apparmor.service time-sync.target systemd-journal-gatewayd.socket systemd-resolved.service
+After=docker.service dbus.service network-online.target hassio-apparmor.service time-sync.target systemd-journal-gatewayd.socket systemd-resolved.service
 StartLimitIntervalSec=60
 StartLimitBurst=5
 ConditionPathExists=/run/dbus/system_bus_socket
