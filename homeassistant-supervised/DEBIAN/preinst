@@ -70,12 +70,6 @@ if [[ "$(docker ps -aq -f name=hassio_supervisor)" ]]; then
     docker container rm --force hassio_supervisor > /dev/null
 fi
 
-# If docker is running, stop it
-if [[ "$(systemctl is-active docker.service)" == "active" ]]; then
-    info "Stopping Docker service"
-    systemctl stop docker.service
-fi
-
 dpkg-divert --package homeassistant-supervised --add --rename \
     --divert /etc/NetworkManager/NetworkManager.conf.real /etc/NetworkManager/NetworkManager.conf
 
