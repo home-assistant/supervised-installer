@@ -67,6 +67,7 @@ apt install ./homeassistant-supervised.deb
 - raspberrypi4
 - raspberrypi3-64
 - raspberrypi4-64
+- raspberrypi5-64
 - tinker
 - khadas-vim3
 
