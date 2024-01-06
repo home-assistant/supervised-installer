@@ -31,6 +31,11 @@ if [ "$(stat -c %a /etc/systemd/resolved.conf)" != "644" ]; then
     chmod 644 /etc/systemd/resolved.conf
 fi
 
+# Unmask systemd-resolved if needed
+if systemctl status systemd-resolved.service | grep -q 'masked'; then
+    sudo systemctl unmask systemd-resolved.service
+fi
+
 # Enable and restart systemd-resolved
 info "Enable systemd-resolved"
 systemctl enable systemd-resolved.service> /dev/null 2>&1;
