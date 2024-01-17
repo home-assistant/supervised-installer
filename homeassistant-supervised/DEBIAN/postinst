@@ -19,6 +19,9 @@ URL_VERSION="https://version.home-assistant.io/stable.json"
 HASSIO_VERSION=$(curl -s ${URL_VERSION} | jq -e -r '.supervisor')
 URL_APPARMOR_PROFILE="https://version.home-assistant.io/apparmor.txt"
 
+# reload systemd
+info "Reload systemd"
+systemctl daemon-reload
 
 # Restart NetworkManager
 info "Restarting NetworkManager"
