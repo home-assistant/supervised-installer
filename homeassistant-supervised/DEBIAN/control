@@ -1,6 +1,6 @@
 Package: homeassistant-supervised
 Section: base
-Version: 1.6.0
+Version: 1.7.0
 Priority: optional
 Architecture: all
 Depends: curl, bash, docker-ce, dbus, network-manager, apparmor, jq, systemd, os-agent, systemd-journal-remote, systemd-resolved | systemd (>=247.3-7+deb11), nfs-common, cifs-utils
