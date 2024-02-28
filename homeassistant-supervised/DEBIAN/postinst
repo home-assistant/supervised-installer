@@ -65,7 +65,7 @@ info "Restarting docker service"
 systemctl restart "${SERVICE_DOCKER}"
 
 # Check network connection
-while ! ping -c 1 -W 1 ${URL_CHECK_ONLINE}; do
+while ! curl -q ${URL_CHECK_ONLINE} >/dev/null 2>&1 ; do
     info "Waiting for ${URL_CHECK_ONLINE} - network interface might be down..."
     sleep 2
 done
