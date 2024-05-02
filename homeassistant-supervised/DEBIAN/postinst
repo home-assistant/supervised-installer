@@ -27,19 +27,6 @@ systemctl daemon-reload
 info "Restarting NetworkManager"
 systemctl restart "${SERVICE_NM}"
 
-# Set permissions of /etc/systemd/resolved.conf
-# check if file has correct permissions
-if [ "$(stat -c %a /etc/systemd/resolved.conf)" != "644" ]; then
-    info "Setting permissions of /etc/systemd/resolved.conf"
-    chmod 644 /etc/systemd/resolved.conf
-fi
-
-# Enable and restart systemd-resolved
-info "Enable systemd-resolved"
-systemctl enable systemd-resolved.service> /dev/null 2>&1;
-info "Restarting systemd-resolved"
-systemctl restart systemd-resolved.service
-
 # Check and fix systemd-journal-gatewayd socket location
 if [ ! -S "/run/systemd-journal-gatewayd.sock" ]; then
     info "Set up systemd-journal-gatewayd socket file"
