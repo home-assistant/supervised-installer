@@ -80,7 +80,4 @@ dpkg-divert --package homeassistant-supervised --add --rename \
     --divert /etc/docker/daemon.json.real /etc/docker/daemon.json
 
 dpkg-divert --package homeassistant-supervised --add --rename \
-    --divert /etc/network/interfaces.real /etc/network/interfaces
-
-dpkg-divert --package homeassistant-supervised --add --rename \
     --divert /etc/systemd/resolved.conf.real /etc/systemd/resolved.conf
