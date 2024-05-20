@@ -19,6 +19,7 @@ Step 1: Install the following dependencies with this command:
 ```bash
 apt install \
 apparmor \
+bluez \
 cifs-utils \
 curl \
 dbus \
