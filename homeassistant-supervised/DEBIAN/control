@@ -1,9 +1,10 @@
 Package: homeassistant-supervised
 Section: base
-Version: 1.7.0
+Version: 1.8.0
 Priority: optional
 Architecture: all
-Depends: curl, bash, docker-ce, dbus, network-manager, apparmor, jq, systemd, os-agent, systemd-journal-remote, systemd-resolved | systemd (>=247.3-7+deb11), nfs-common, cifs-utils
+Pre-Depends: curl, bash, docker-ce, dbus, network-manager, apparmor, jq, systemd, os-agent, systemd-journal-remote, systemd-resolved | systemd (>=247.3-7+deb11)
+Depends: bluez, cifs-utils, nfs-common
 Maintainer: Matheson Steplock <https://mathesonsteplock.ca/>
 Homepage: https://www.home-assistant.io/
 Description: Home Assistant Supervised
