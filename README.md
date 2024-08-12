@@ -34,6 +34,22 @@ udisks2 \
 wget -y
 ```
 
+If you haven't been using NetworkManager before, you might see instructions on how to let NetworkManager manage the current network interface.
+
+```
+...
+Setting up network-manager (1.42.4-1) ...
+
+The following network interfaces were found in /etc/network/interfaces
+which means they are currently configured by ifupdown:
+- enp1s0
+If you want to manage those interfaces with NetworkManager instead
+remove their configuration from /etc/network/interfaces.
+...
+```
+
+Follow these steps before continuing!
+
 Step 2: Install Docker-CE with the following command:
 
 ```bash
