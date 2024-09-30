@@ -102,3 +102,5 @@ DATA_SHARE=/my/own/homeassistant dpkg --force-confdef --force-confold -i homeass
 ## Troubleshooting
 
 If something's going wrong, use `journalctl -f` to get your system logs. If you are not familiar with Linux and how you can fix issues, we recommend to use our Home Assistant OS.
+
+[![Home Assistant - A project from the Open Home Foundation](https://www.openhomefoundation.org/badges/home-assistant.png)](https://www.openhomefoundation.org/)
