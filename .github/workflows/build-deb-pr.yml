@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4.1.7
+        uses: actions/checkout@v4.2.0
       - name: Build Debian Package in Docker
         run: |
           docker run --rm -v $(pwd):/tmp debian:bullseye-slim bash -c \
