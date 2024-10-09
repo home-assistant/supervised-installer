@@ -12,7 +12,7 @@ jobs:
         uses: actions/checkout@v4.2.0
       - name: Build Debian Package in Docker
         run: |
-          docker run --rm -v $(pwd):/tmp debian:bullseye-slim bash -c \
+          docker run --rm -v $(pwd):/tmp debian:bookworm-slim bash -c \
           "cd /tmp \
           && chmod 555 homeassistant-supervised/DEBIAN/p* \
           && dpkg-deb --build --root-owner-group homeassistant-supervised"

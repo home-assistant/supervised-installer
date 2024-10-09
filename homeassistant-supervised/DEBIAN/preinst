@@ -12,7 +12,7 @@ warn ""
 
 # Check if we are running on a supported OS
 BYPASS_OS_CHECK=${BYPASS_OS_CHECK:-false}
-supported_os=("Debian GNU/Linux 11 (bullseye)" "Debian GNU/Linux 12 (bookworm)")
+supported_os=("Debian GNU/Linux 12 (bookworm)")
 
 CURRENT_OS=$(lsb_release -d | awk -F"\t" '{print $2}')
 os_supported=false

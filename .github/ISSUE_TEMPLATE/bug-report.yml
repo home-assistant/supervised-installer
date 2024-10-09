@@ -13,7 +13,7 @@ body:
     attributes:
       label: OS Version
       description: Please Insert the output of `lsb_release -d`
-      placeholder: Debian GNU/Linux 11 (bullseye)
+      placeholder: Debian GNU/Linux 12 (bookworm)
     validations:
       required: true
   - type: input
