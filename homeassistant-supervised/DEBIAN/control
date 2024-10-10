@@ -3,7 +3,7 @@ Section: base
 Version: 2.0.0
 Priority: optional
 Architecture: all
-Pre-Depends: curl, bash, docker-ce, dbus, network-manager, apparmor, jq, systemd, os-agent, systemd-journal-remote, systemd-resolved
+Pre-Depends: curl, bash, docker-ce, dbus, network-manager, apparmor, jq, systemd, os-agent:arm64, systemd-journal-remote, systemd-resolved
 Depends: bluez, cifs-utils, nfs-common
 Maintainer: Matheson Steplock <https://mathesonsteplock.ca/>
 Homepage: https://www.home-assistant.io/
