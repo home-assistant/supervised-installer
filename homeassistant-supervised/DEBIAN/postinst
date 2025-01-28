@@ -177,7 +177,7 @@ elif [ -f /boot/firmware/cmdline.txt ]
 then
     if grep -q "systemd.unified_cgroup_hierarchy=false" /boot/firmware/cmdline.txt; then
         info "Switching to cgroup v2"
-        sed -i.bak 's/ systemd.\unified_cgroup_hierarchy=false//' /boot/firmware/cmdline.txt
+        sed -i.bak 's/ systemd\.unified_cgroup_hierarchy=false//' /boot/firmware/cmdline.txt
         touch /var/run/reboot-required
     fi
 else
