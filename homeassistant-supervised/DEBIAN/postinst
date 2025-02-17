@@ -169,7 +169,7 @@ then
     if grep -q "systemd.unified_cgroup_hierarchy=false" /etc/default/grub; then
         info "Switching to cgroup v2"
         cp /etc/default/grub /etc/default/grub.bak
-        sed -i 's/ systemd\.unified_cgroup_hierarchy=false//' /etc/default/grub
+        sed -i 's/systemd\.unified_cgroup_hierarchy=false //' /etc/default/grub
         update-grub
         touch /var/run/reboot-required
     fi
