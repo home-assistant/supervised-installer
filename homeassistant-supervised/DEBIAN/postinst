@@ -163,21 +163,21 @@ systemctl start hassio-supervisor.service
 info "Installing the 'ha' cli"
 chmod a+x "${PREFIX}/bin/ha"
 
-# Switch to cgroup v1
+# Switch to cgroup v2
 if [ -f /etc/default/grub ]
 then
-    if ! grep -q "systemd.unified_cgroup_hierarchy=false" /etc/default/grub; then
-        info "Switching to cgroup v1"
+    if grep -q "systemd.unified_cgroup_hierarchy=false" /etc/default/grub; then
+        info "Switching to cgroup v2"
         cp /etc/default/grub /etc/default/grub.bak
-        sed -i 's/^GRUB_CMDLINE_LINUX_DEFAULT="/&systemd.unified_cgroup_hierarchy=false /' /etc/default/grub
+        sed -i 's/systemd\.unified_cgroup_hierarchy=false //' /etc/default/grub
         update-grub
         touch /var/run/reboot-required
     fi
 elif [ -f /boot/firmware/cmdline.txt ]
 then
-    if ! grep -q "systemd.unified_cgroup_hierarchy=false" /boot/firmware/cmdline.txt; then
-        info "Switching to cgroup v1"
-        sed -i.bak 's/$/ systemd.unified_cgroup_hierarchy=false/' /boot/firmware/cmdline.txt
+    if grep -q "systemd.unified_cgroup_hierarchy=false" /boot/firmware/cmdline.txt; then
+        info "Switching to cgroup v2"
+        sed -i.bak 's/ systemd\.unified_cgroup_hierarchy=false//' /boot/firmware/cmdline.txt
         touch /var/run/reboot-required
     fi
 else
