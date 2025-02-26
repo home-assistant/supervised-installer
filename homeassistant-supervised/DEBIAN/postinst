@@ -118,10 +118,18 @@ case ${ARCH} in
         error "${ARCH} unknown!"
     ;;
 esac
+
 PREFIX=${PREFIX:-/usr}
 SYSCONFDIR=${SYSCONFDIR:-/etc}
-DATA_SHARE=${DATA_SHARE:-$PREFIX/share/hassio}
+DEFAULT_DATA_SHARE=/var/lib/homeassistant
+DATA_SHARE=${DATA_SHARE:-$DEFAULT_DATA_SHARE}
 CONFIG="${SYSCONFDIR}/hassio.json"
+
+if [ -f "${CONFIG}" ]; then
+    # Using data share of existing configuration
+    DATA_SHARE=$(jq -r --arg default "$DEFAULT_DATA_SHARE" '.data // $default' "$CONFIG")
+fi
+
 cat > "${CONFIG}" <<- EOF
 {
     "supervisor": "${HASSIO_DOCKER}",
