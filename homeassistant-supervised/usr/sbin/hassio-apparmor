@@ -5,7 +5,7 @@ set -e
 CONFIG_FILE=%%HASSIO_CONFIG%%
 
 # Read configs
-DATA="$(jq --raw-output '.data // "/usr/share/hassio"' ${CONFIG_FILE})"
+DATA="$(jq --raw-output '.data // "/var/lib/homeassistant"' ${CONFIG_FILE})"
 PROFILES_DIR="${DATA}/apparmor"
 CACHE_DIR="${PROFILES_DIR}/cache"
 
