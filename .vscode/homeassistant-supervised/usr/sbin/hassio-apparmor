@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+set -e
+
+# Load configs
+CONFIG_FILE=%%HASSIO_CONFIG%%
+
+# Read configs
+DATA="$(jq --raw-output '.data // "/usr/share/hassio"' ${CONFIG_FILE})"
+PROFILES_DIR="${DATA}/apparmor"
+CACHE_DIR="${PROFILES_DIR}/cache"
+
+# Check folder structure
+mkdir -p "${PROFILES_DIR}"
+mkdir -p "${CACHE_DIR}"
+
+# Load existing profiles
+for profile in "${PROFILES_DIR}"/*; do
+    if [ ! -f "${profile}" ]; then
+        continue
+    fi
+
+    # Load Profile
+    if ! apparmor_parser -r -W -L "${CACHE_DIR}" "${profile}"; then
+        echo "[Error]: Can't load profile ${profile}"
+    fi
+done

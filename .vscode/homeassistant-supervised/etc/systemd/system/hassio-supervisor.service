@@ -1,0 +1,20 @@
+[Unit]
+Description=Hass.io supervisor
+Requires=docker.service dbus.service
+Wants=network-online.target hassio-apparmor.service time-sync.target systemd-journal-gatewayd.socket systemd-resolved.service
+After=docker.service dbus.service network-online.target hassio-apparmor.service time-sync.target systemd-journal-gatewayd.socket systemd-resolved.service
+StartLimitIntervalSec=60
+StartLimitBurst=5
+ConditionPathExists=/run/dbus/system_bus_socket
+ConditionPathExists=/run/docker.sock
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=5s
+ExecStartPre=-%%BINARY_DOCKER%% stop hassio_supervisor
+ExecStart=%%BINARY_HASSIO%%
+ExecStop=-%%BINARY_DOCKER%% stop hassio_supervisor
+
+[Install]
+WantedBy=multi-user.target

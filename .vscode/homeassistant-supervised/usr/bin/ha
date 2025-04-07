@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# shellcheck disable=SC2048,SC2086
+
+if [ "$1" != "__complete" ]; then
+    use_tty="-t"
+else
+    use_tty=""
+fi
+
+docker exec ${use_tty} hassio_cli ha $*
