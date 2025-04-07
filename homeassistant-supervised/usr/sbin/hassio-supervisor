@@ -9,7 +9,7 @@ set -e
 CONFIG_FILE=%%HASSIO_CONFIG%%
 
 # Init supervisor
-SUPERVISOR_DATA="$(jq --raw-output '.data // "/usr/share/hassio"' ${CONFIG_FILE})"
+SUPERVISOR_DATA="$(jq --raw-output '.data // "/var/lib/homeassistant"' ${CONFIG_FILE})"
 SUPERVISOR_STARTUP_MARKER="/run/supervisor/startup-marker"
 SUPERVISOR_STARTSCRIPT_VERSION="${SUPERVISOR_DATA}/supervisor-version"
 SUPERVISOR_MACHINE="$(jq --raw-output '.machine' ${CONFIG_FILE})"

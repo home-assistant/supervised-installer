@@ -23,6 +23,7 @@ bluez \
 cifs-utils \
 curl \
 dbus \
+iproute2 \
 jq \
 libglib2.0-bin \
 lsb-release \
@@ -30,6 +31,7 @@ network-manager \
 nfs-common \
 systemd-journal-remote \
 systemd-resolved \
+systemd-timesyncd \
 udisks2 \
 wget -y
 ```
@@ -90,7 +92,7 @@ apt install ./homeassistant-supervised.deb
 
 ## Configuration
 
-The default path for our `$DATA_SHARE` is `/usr/share/hassio`.
+The default path for our `$DATA_SHARE` is `/var/lib/homeassistant` (used to be `/usr/share/hassio`).
 This path is used to store all home assistant related things.
 
 You can reconfigure this path during installation with
