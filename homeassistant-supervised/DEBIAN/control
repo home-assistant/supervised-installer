@@ -7,7 +7,7 @@ Pre-Depends: curl, bash, docker-ce, dbus, network-manager, apparmor, jq, systemd
 Depends: bluez, cifs-utils, nfs-common, iproute2
 Maintainer: Matheson Steplock <https://mathesonsteplock.ca/>
 Homepage: https://www.home-assistant.io/
-Description: Home Assistant Supervised
+Description: Home Assistant Supervised Armbian patched
  This installation method provides the full Home Assistant experience on a regular operating system.
  This means, all components from the Home Assistant method are used, except for the Home Assistant Operating System.
  This system will run the Home Assistant Supervisor. The Supervisor is not just an application, it is a full appliance that manages the whole system.
