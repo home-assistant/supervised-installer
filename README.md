@@ -30,7 +30,6 @@ lsb-release \
 network-manager \
 nfs-common \
 systemd-journal-remote \
-systemd-resolved \
 systemd-timesyncd \
 udisks2 \
 wget -y
