@@ -1,6 +1,10 @@
-# This installation method is for advanced users only
-
-## Make sure you understand [the requirements](https://github.com/home-assistant/architecture/blob/master/adr/0014-home-assistant-supervised.md)
+> [!IMPORTANT]
+> This installation method is for advanced users only!
+>
+> The Supervised Debian installation is an opinionated appliance. That means it has
+> many dependencies and bundles default configuration files for system services!
+>
+> Make sure you understand [the requirements](https://github.com/home-assistant/architecture/blob/master/adr/0014-home-assistant-supervised.md).
 
 # Install Home Assistant Supervised
 
@@ -10,68 +14,71 @@ By not using the Home Assistant Operating System, the user is responsible for ma
 
 This method is considered advanced and should only be used if one is an expert in managing a Linux operating system, Docker and networking.
 
+
+
 ## Installation
 
 Run the following commands as root (`su -` or `sudo su -` on machines with sudo installed):
 
-Step 1: Install the following dependencies with this command:
+Step 1: Transition from the default Debian networking service `ifupdown` to NetworkManager and systemd-resolved, run the following commands:
 
 ```bash
 apt install \
-apparmor \
-bluez \
-cifs-utils \
-curl \
-dbus \
-iproute2 \
-jq \
-libglib2.0-bin \
-lsb-release \
 network-manager \
-nfs-common \
-systemd-journal-remote \
-systemd-resolved \
-systemd-timesyncd \
-udisks2 \
-wget -y
+systemd-resolved
 ```
 
-If you haven't been using NetworkManager before, you might see instructions on how to let NetworkManager manage the current network interface.
-
+At this point you won't have Internet access because systemd-resolved doesn't know about your DNS setup. To restore Internet, we need to fully transition the network setup to NetworkManager. There was a hint in the output of the previous command:
 ```
-...
-Setting up network-manager (1.42.4-1) ...
-
 The following network interfaces were found in /etc/network/interfaces
 which means they are currently configured by ifupdown:
 - enp1s0
 If you want to manage those interfaces with NetworkManager instead
 remove their configuration from /etc/network/interfaces.
-...
 ```
 
-Follow these steps before continuing!
+The network interface name might be different depending on your setup. For a default network setup using DHCP the following commands work:
 
-Step 2: Install Docker-CE with the following command:
+```bash
+systemctl restart systemd-resolved.service && \
+systemctl disable --now networking.service && \
+mv /etc/network/interfaces /etc/network/interfaces.disabled && \
+systemctl restart NetworkManager
+```
+
+> [!NOTE]
+> Your system might have a new IP address at this point, probably because the DHCP server id used by NetworkManager appears to be different.
+
+Step 2: Install Docker-CE, OS Agent and Supervised dependencies which aren't part of the package dependencies with this command:
+
+```bash
+apt install \
+curl \
+lsb-release \
+udisks2
+```
+
+Step 3: Install Docker-CE with the following command:
 
 ```bash
 curl -fsSL get.docker.com | sh
 ```
 
-Step 3: Install the OS-Agent:
+Step 4: Install the OS-Agent:
 
 Instructions for installing the OS-Agent can be found [here](https://github.com/home-assistant/os-agent/tree/main#using-home-assistant-supervised-on-debian)
 
-Step 4: Install the Home Assistant Supervised Debian Package:
+Step 5: Install the Home Assistant Supervised Debian Package:
 
 ```bash
-wget -O homeassistant-supervised.deb https://github.com/home-assistant/supervised-installer/releases/latest/download/homeassistant-supervised.deb
+curl -L -o homeassistant-supervised.deb https://github.com/home-assistant/supervised-installer/releases/latest/download/homeassistant-supervised.deb
 apt install ./homeassistant-supervised.deb
 ```
 
 ## Supported Machine types
 
 - generic-x86-64
+- generic-aarch64
 - odroid-c2
 - odroid-c4
 - odroid-n2
