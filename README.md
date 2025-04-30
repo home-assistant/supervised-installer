@@ -41,8 +41,8 @@ The network interface name might be different depending on your setup. For a def
 
 ```bash
 systemctl restart systemd-resolved.service && \
-systemctl stop networking.service && \
-sed -i  '/enp1s0/d' /etc/network/interfaces && \
+systemctl disable --now networking.service && \
+mv /etc/network/interfaces /etc/network/interfaces.disabled && \
 systemctl restart NetworkManager
 ```
 
