@@ -12,17 +12,20 @@ warn ""
 
 # Check if we are running on a supported OS
 BYPASS_OS_CHECK=${BYPASS_OS_CHECK:-false}
-supported_os=("Debian GNU/Linux 12 (bookworm)")
+supported_os_id="debian"
+supported_os_version_id=("12")
 
-CURRENT_OS=$(lsb_release -d | awk -F"\t" '{print $2}')
+source /etc/os-release
 os_supported=false
 
-for os in "${supported_os[@]}"; do
-    if [[ $os == "$CURRENT_OS" ]]; then
-        os_supported=true
-        break
-    fi
-done
+if [[ "$ID" == "$supported_os_id" ]]; then
+    for version in "${supported_os_version_id[@]}"; do
+        if [[ "$VERSION_ID" == "$version" ]]; then
+            os_supported=true
+            break
+        fi
+    done
+fi
 
 if [[ $os_supported == false ]]; then
     if [[ $BYPASS_OS_CHECK != "true" ]]; then

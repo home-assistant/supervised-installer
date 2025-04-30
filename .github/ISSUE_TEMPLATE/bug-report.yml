@@ -12,7 +12,7 @@ body:
     id: os-version
     attributes:
       label: OS Version
-      description: Please Insert the output of `lsb_release -d`
+      description: Please run `hostnamectl` and insert the value after "Operating System"
       placeholder: Debian GNU/Linux 12 (bookworm)
     validations:
       required: true
@@ -20,7 +20,7 @@ body:
     id: uname
     attributes:
       label: System Information
-      description: Please Insert the output of `uname -a`
+      description: Please insert the output of `uname -a`
       placeholder: 'Linux ha 6.1.0-26-amd64 #1 SMP PREEMPT_DYNAMIC Debian 6.1.112-1 (2024-09-30) x86_64 GNU/Linux'
     validations:
       required: true
