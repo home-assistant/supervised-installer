@@ -17,7 +17,7 @@ SERVICE_NM="NetworkManager.service"
 URL_CHECK_ONLINE="https://checkonline.home-assistant.io/online.txt"
 URL_VERSION="https://version.home-assistant.io/stable.json"
 HASSIO_VERSION=$(curl -s ${URL_VERSION} | jq -e -r '.supervisor')
-URL_APPARMOR_PROFILE="https://version.home-assistant.io/apparmor.txt"
+URL_APPARMOR_PROFILE="https://version.home-assistant.io/apparmor_stable.txt"
 
 # reload systemd
 info "Reload systemd"
