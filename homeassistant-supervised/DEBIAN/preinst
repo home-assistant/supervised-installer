@@ -29,10 +29,10 @@ fi
 
 if [[ $os_supported == false ]]; then
     if [[ $BYPASS_OS_CHECK != "true" ]]; then
-        error "${CURRENT_OS} is not supported!"
+        error "${PRETTY_NAME} is not supported!"
     fi
     warn "Bypassing OS check..."
-    warn "${CURRENT_OS} is not supported!"
+    warn "${PRETTY_NAME} is not supported!"
     warn "Please DO NOT report issues regarding this OS!"
 fi
 
