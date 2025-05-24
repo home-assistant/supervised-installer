@@ -1,6 +1,6 @@
 Package: homeassistant-supervised
 Section: base
-Version: 3.0.0
+Version: 3.1.0
 Priority: optional
 Architecture: all
 Pre-Depends: curl, bash, docker-ce, dbus, network-manager, apparmor, jq, systemd, systemd-timesyncd, os-agent, systemd-journal-remote, systemd-resolved
