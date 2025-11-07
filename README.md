@@ -1,3 +1,9 @@
+> [!WARNING]
+> This installation method is unsupported with the Home Assistant OS 2025.12.0
+> release. See the [Deprecating Core and Supervised installation methods, and 32-bit systems](https://www.home-assistant.io/blog/2025/05/22/deprecating-core-and-supervised-installation-methods-and-32-bit-systems/)
+> blog post for more information.
+
+
 > [!IMPORTANT]
 > This installation method is for advanced users only!
 >
