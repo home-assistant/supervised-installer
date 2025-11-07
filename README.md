@@ -54,7 +54,6 @@ Step 2: Install Docker-CE, OS Agent and Supervised dependencies which aren't par
 ```bash
 apt install \
 curl \
-lsb-release \
 udisks2
 ```
 
