@@ -13,7 +13,7 @@ body:
     attributes:
       label: OS Version
       description: Please run `hostnamectl` and insert the value after "Operating System"
-      placeholder: Debian GNU/Linux 12 (bookworm)
+      placeholder: Debian GNU/Linux 13 (bookworm)
     validations:
       required: true
   - type: input
