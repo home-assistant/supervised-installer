@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v5.0.0
+        uses: actions/checkout@v6.0.0
       - name: Build Debian Package in Docker
         run: |
           docker run --rm -v $(pwd):/tmp debian:bookworm-slim bash -c \
