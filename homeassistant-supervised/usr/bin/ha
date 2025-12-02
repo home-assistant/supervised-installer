@@ -1,10 +1,11 @@
-#!/usr/bin/env bash
-# shellcheck disable=SC2048,SC2086
+#!/bin/sh
+# ==============================================================================
+# HA utility
+# ==============================================================================
 
-if [ "$1" != "__complete" ]; then
-    use_tty="-t"
+if [ -t 1 ]; then
+        # stdout (fd 1) must be terminal, otherwise `-t` causes error
+        docker exec -it hassio_cli ha "$@"
 else
-    use_tty=""
+        docker exec -i hassio_cli ha "$@"
 fi
-
-docker exec ${use_tty} hassio_cli ha $*
