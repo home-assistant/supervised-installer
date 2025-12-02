@@ -38,7 +38,7 @@ fi
 
 # Check if we are running on a supported architecture
 ARCH=$(uname -m)
-if [[ ! "i386|i686|x86_64|arm|armv6l|armv7l|aarch64" == *"$ARCH"* ]]; then
+if [[ ! "x86_64|aarch64" == *"$ARCH"* ]]; then
     error "${ARCH} is not supported!"
 fi
 

@@ -83,23 +83,14 @@ apt install ./homeassistant-supervised.deb
 ## Supported Machine types
 
 - generic-x86-64
-- generic-aarch64
 - odroid-c2
 - odroid-c4
 - odroid-n2
-- odroid-xu
-- qemuarm
-- qemuarm-64
-- qemux86
+- qemuarm-64 (use this for any aarch64 machine)
 - qemux86-64
-- raspberrypi
-- raspberrypi2
-- raspberrypi3
-- raspberrypi4
 - raspberrypi3-64
 - raspberrypi4-64
 - raspberrypi5-64
-- tinker
 - khadas-vim3
 
 ## Configuration
