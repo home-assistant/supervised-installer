@@ -75,33 +75,9 @@ PRIMARY_INTERFACE=$(ip route | awk '/^default/ { print $5; exit }')
 IP_ADDRESS=$(ip -4 addr show dev "${PRIMARY_INTERFACE}" | awk '/inet / { sub("/.*", "", $2); print $2 }')
 
 case ${ARCH} in
-    "i386" | "i686")
-        MACHINE=${MACHINE:=qemux86}
-        HASSIO_DOCKER="${DOCKER_REPO}/i386-hassio-supervisor"
-    ;;
     "x86_64")
         MACHINE=${MACHINE:=qemux86-64}
         HASSIO_DOCKER="${DOCKER_REPO}/amd64-hassio-supervisor"
-    ;;
-    "arm" |"armv6l")
-        if [ -z "${MACHINE}" ]; then
-             db_input critical ha/machine-type || true
-             db_go || true
-             db_get ha/machine-type || true
-             MACHINE="${RET}"
-             db_stop
-        fi
-        HASSIO_DOCKER="${DOCKER_REPO}/armhf-hassio-supervisor"
-    ;;
-    "armv7l")
-        if [ -z "${MACHINE}" ]; then
-             db_input critical ha/machine-type || true
-             db_go || true
-             db_get ha/machine-type || true
-             MACHINE="${RET}"
-             db_stop
-        fi
-        HASSIO_DOCKER="${DOCKER_REPO}/armv7-hassio-supervisor"
     ;;
     "aarch64")
         if [ -z "${MACHINE}" ]; then
