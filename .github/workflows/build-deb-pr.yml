@@ -17,7 +17,7 @@ jobs:
           && chmod 555 homeassistant-supervised/DEBIAN/p* \
           && dpkg-deb --build --root-owner-group homeassistant-supervised"
       - name: Upload
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: homeassistant-supervised.deb
           path: homeassistant-supervised.deb
