@@ -69,7 +69,7 @@ case ${ARCH} in
         MACHINE=${MACHINE:=qemux86-64}
         HASSIO_DOCKER="${DOCKER_REPO}/amd64-hassio-supervisor"
     ;;
-    "arm" |"armv6l")
+    "arm" | "armv6l")
         if [ -z "${MACHINE}" ]; then
              db_input critical ha/machine-type || true
              db_go || true
